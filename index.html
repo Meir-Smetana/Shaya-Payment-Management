@@ -2,27 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>ShuttleOps — Digital Dispatcher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Shaya's Rides</title>
 
   <!-- PWA Meta Tags -->
   <meta name="theme-color" content="#0D1117" />
-  <meta name="description" content="Professional shuttle dispatch & ledger for Montreal–NYC routes" />
+  <meta name="description" content="Shaya's Rides — Dispatch & Ledger" />
   <link rel="manifest" href="manifest.json" />
 
-  <!-- Apple PWA Meta Tags -->
+  <!-- Apple PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="ShuttleOps" />
+  <meta name="apple-mobile-web-app-title" content="Shaya's Rides" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png" />
   <link rel="apple-touch-startup-image" href="icons/splash.png" />
 
-  <!-- Android / Microsoft -->
+  <!-- Android -->
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="msapplication-TileColor" content="#0D1117" />
-  <meta name="msapplication-TileImage" content="icons/icon-144.png" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,57 +26,88 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
+    /* ─── RESET & ROOT ─── */
     :root {
-      --bg-primary: #0D1117;
-      --bg-secondary: #161B22;
-      --bg-tertiary: #21262D;
-      --bg-card: #1C2128;
-      --accent: #58A6FF;
-      --accent-dim: rgba(88,166,255,0.15);
-      --success: #2EA44F;
-      --success-dim: rgba(46,164,79,0.15);
-      --danger: #F85149;
-      --danger-dim: rgba(248,81,73,0.12);
-      --warning: #D29922;
-      --warning-dim: rgba(210,153,34,0.15);
-      --text-primary: #E6EDF3;
-      --text-secondary: #8B949E;
-      --text-muted: #484F58;
-      --border: rgba(139,148,158,0.15);
-      --border-hover: rgba(139,148,158,0.3);
-      --radius: 12px;
-      --radius-sm: 8px;
-      --radius-lg: 16px;
-      --font: 'Space Grotesk', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --bg-primary:    #0D1117;
+      --bg-secondary:  #161B22;
+      --bg-tertiary:   #21262D;
+      --bg-card:       #1C2128;
+      --accent:        #58A6FF;
+      --accent-dim:    rgba(88,166,255,0.15);
+      --success:       #2EA44F;
+      --success-dim:   rgba(46,164,79,0.15);
+      --danger:        #F85149;
+      --danger-dim:    rgba(248,81,73,0.12);
+      --warning:       #D29922;
+      --warning-dim:   rgba(210,153,34,0.15);
+      --text-primary:  #E6EDF3;
+      --text-secondary:#8B949E;
+      --text-muted:    #484F58;
+      --border:        rgba(139,148,158,0.15);
+      --radius:        12px;
+      --radius-sm:     8px;
+      --radius-lg:     16px;
+      --font:          'Space Grotesk', sans-serif;
+      --font-mono:     'JetBrains Mono', monospace;
+      --safe-top:      env(safe-area-inset-top, 0px);
+      --safe-bottom:   env(safe-area-inset-bottom, 20px);
+      --app-width:     430px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html, body {
+    /* ─── SCROLLBAR: hide completely on mobile, thin on desktop ─── */
+    * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+    *:hover { scrollbar-color: var(--text-muted) transparent; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: transparent; border-radius: 2px; }
+    *:hover::-webkit-scrollbar-thumb { background: var(--text-muted); }
+
+    /* ─── DESKTOP WRAPPER: centers the app in a phone-sized box ─── */
+    html {
+      background: #060809;
       height: 100%;
-      background: var(--bg-primary);
-      color: var(--text-primary);
+      /* Prevent any horizontal scroll at the html level */
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100%;
+      /* On desktop: center the phone frame */
+      display: flex;
+      justify-content: center;
+      background: #060809;
       font-family: var(--font);
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior: none;
+      /* Critical: stop body from overflowing sideways */
+      overflow-x: hidden;
     }
 
+    /* The actual phone-width container */
     #app {
+      width: 100%;
+      max-width: var(--app-width);
       min-height: 100vh;
       min-height: -webkit-fill-available;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       display: flex;
       flex-direction: column;
+      position: relative;
+      /* No overflow:hidden here — let the shell scroll naturally */
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
+    /* Desktop: add a subtle phone-frame shadow */
+    @media (min-width: 500px) {
+      body { padding: 0; align-items: flex-start; }
+      #app {
+        min-height: 100vh;
+        box-shadow: 0 0 0 1px rgba(139,148,158,0.1), 0 0 60px rgba(0,0,0,0.6);
+      }
+    }
 
-    /* Auth Screen */
+    /* ─── AUTH SCREEN ─── */
     .auth-screen {
       flex: 1;
       display: flex;
@@ -90,32 +117,31 @@
       padding: 2rem 1.5rem;
       padding-top: calc(var(--safe-top) + 2rem);
       background: radial-gradient(ellipse at top, rgba(88,166,255,0.08) 0%, transparent 60%);
+      min-height: 100vh;
     }
 
     .auth-logo {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      letter-spacing: -0.04em;
-      color: var(--text-primary);
+      letter-spacing: -0.03em;
       margin-bottom: 0.25rem;
     }
-
     .auth-logo span { color: var(--accent); }
 
     .auth-sub {
       color: var(--text-secondary);
       font-size: 0.875rem;
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
       text-align: center;
     }
 
     .auth-card {
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 2rem;
+      padding: 1.75rem;
     }
 
     .auth-tab-bar {
@@ -123,12 +149,12 @@
       background: var(--bg-tertiary);
       border-radius: var(--radius-sm);
       padding: 4px;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
     }
 
     .auth-tab {
       flex: 1;
-      padding: 0.6rem;
+      padding: 0.55rem;
       border: none;
       background: transparent;
       color: var(--text-secondary);
@@ -139,28 +165,25 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-
     .auth-tab.active {
       background: var(--bg-secondary);
       color: var(--text-primary);
       box-shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
 
-    .field-group { margin-bottom: 1.25rem; }
-
+    .field-group { margin-bottom: 1.1rem; }
     .field-label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 500;
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
     }
-
     .field-input {
       width: 100%;
-      padding: 0.875rem 1rem;
+      padding: 0.8rem 1rem;
       background: var(--bg-primary);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -170,8 +193,9 @@
       outline: none;
       transition: border-color 0.2s;
       -webkit-appearance: none;
+      /* Prevent horizontal overflow */
+      max-width: 100%;
     }
-
     .field-input:focus { border-color: var(--accent); }
     .field-input::placeholder { color: var(--text-muted); }
 
@@ -179,15 +203,14 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
-
     .remember-row input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
     .remember-row label { font-size: 0.875rem; color: var(--text-secondary); cursor: pointer; }
 
     .btn-primary {
       width: 100%;
-      padding: 1rem;
+      padding: 0.9rem;
       background: var(--accent);
       border: none;
       border-radius: var(--radius);
@@ -199,64 +222,60 @@
       transition: opacity 0.2s, transform 0.1s;
       -webkit-tap-highlight-color: transparent;
     }
-
-    .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-primary:active { transform: scale(0.98); opacity: 0.88; }
 
     .auth-error {
       background: var(--danger-dim);
       border: 1px solid var(--danger);
       border-radius: var(--radius-sm);
-      padding: 0.75rem 1rem;
+      padding: 0.7rem 1rem;
       color: var(--danger);
-      font-size: 0.875rem;
-      margin-bottom: 1.25rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.1rem;
     }
 
-    /* Main App Shell */
+    /* ─── APP SHELL ─── */
     .app-shell {
       flex: 1;
       display: flex;
       flex-direction: column;
-      max-width: 100vw;
-      overflow: hidden;
+      /* Let the whole page scroll — no inner fixed-height scroll container */
+      min-height: 100vh;
     }
 
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(13,17,23,0.85);
+      background: rgba(13,17,23,0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      padding: calc(var(--safe-top) + 0.75rem) 1rem 0.75rem;
+      padding: calc(var(--safe-top) + 0.7rem) 1rem 0.7rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      /* Prevent top-bar from widening past app */
+      width: 100%;
     }
 
-    .top-bar-logo {
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-    }
-
+    .top-bar-logo { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
     .top-bar-logo span { color: var(--accent); }
 
-    .top-bar-right { display: flex; align-items: center; gap: 0.75rem; }
+    .top-bar-right { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
 
     .trip-badge {
       background: var(--success-dim);
       border: 1px solid var(--success);
       color: var(--success);
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.25rem 0.6rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
       border-radius: 20px;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
-
     .trip-badge.inactive {
       background: var(--bg-tertiary);
       border-color: var(--border);
@@ -268,145 +287,222 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text-secondary);
-      font-size: 1.1rem;
-      width: 36px;
-      height: 36px;
+      font-size: 1rem;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
     }
 
-    /* Tab Navigation */
+    /* ─── BOTTOM TAB NAV ─── */
     .tab-nav {
       position: sticky;
       bottom: 0;
       z-index: 100;
-      background: rgba(22,27,34,0.95);
+      background: rgba(22,27,34,0.97);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-top: 1px solid var(--border);
       padding-bottom: var(--safe-bottom);
       display: flex;
+      width: 100%;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 0.75rem 0.25rem;
+      padding: 0.7rem 0.2rem;
       border: none;
       background: transparent;
       color: var(--text-muted);
       font-family: var(--font);
-      font-size: 0.65rem;
-      font-weight: 500;
+      font-size: 0.6rem;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       -webkit-tap-highlight-color: transparent;
       transition: color 0.2s;
       letter-spacing: 0.04em;
       text-transform: uppercase;
     }
-
-    .tab-btn .tab-icon { font-size: 1.25rem; }
-
+    .tab-btn .tab-icon { font-size: 1.2rem; }
     .tab-btn.active { color: var(--accent); }
 
-    /* Main Content Area */
+    /* ─── MAIN CONTENT ─── */
+    /* NO overflow:hidden, NO fixed height — let the page scroll naturally */
     .main-content {
       flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
       padding: 1rem;
-      padding-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      /* Just let it flow — the whole #app scrolls */
     }
 
-    /* Cards */
+    /* ─── DASHBOARD (TRIP LIBRARY) ─── */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .trip-library-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .trip-slot {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: border-color 0.2s, background 0.2s;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      /* Prevent slot text from widening past cell */
+      overflow: hidden;
+    }
+    .trip-slot:active { background: var(--bg-tertiary); }
+    .trip-slot.active-trip { border-color: var(--accent); background: var(--accent-dim); }
+    .trip-slot.has-data { border-color: var(--success); }
+
+    .trip-slot-empty {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      height: 100%;
+    }
+    .trip-slot-empty-icon { font-size: 1.75rem; opacity: 0.4; }
+    .trip-slot-empty-label { font-size: 0.7rem; color: var(--text-muted); }
+
+    .trip-slot-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .trip-slot-meta {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+    .trip-slot-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+    .slot-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .slot-badge.live { background: var(--success-dim); color: var(--success); border: 1px solid var(--success); }
+    .slot-badge.saved { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent); }
+
+    .slot-delete {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: var(--danger-dim);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--danger);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.35rem;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .trip-slot:hover .slot-delete,
+    .trip-slot:active .slot-delete { opacity: 1; }
+    /* Always show on touch devices (no hover) */
+    @media (hover: none) { .slot-delete { opacity: 0.7; } }
+
+    /* ─── CARDS ─── */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 1.25rem;
-      margin-bottom: 1rem;
+      padding: 1.1rem;
+      margin-bottom: 0.875rem;
     }
-
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
+      margin-bottom: 0.875rem;
     }
-
     .card-title {
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 0.75rem;
+      font-weight: 700;
       color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    /* Section headings */
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-    }
-
-    /* Metric Row */
+    /* ─── METRICS ─── */
     .metric-row {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+      gap: 0.65rem;
+      margin-bottom: 0.875rem;
     }
-
     .metric-card {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1rem;
+      padding: 0.875rem;
     }
-
-    .metric-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.35rem;
-    }
-
-    .metric-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
+    .metric-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.3rem; }
+    .metric-value { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; font-family: var(--font-mono); }
     .metric-value.green { color: var(--success); }
-    .metric-value.blue { color: var(--accent); }
-    .metric-value.red { color: var(--danger); }
-    .metric-value.yellow { color: var(--warning); }
+    .metric-value.blue  { color: var(--accent); }
+    .metric-value.red   { color: var(--danger); }
+    .metric-value.yellow{ color: var(--warning); }
 
-    /* Trip Action Buttons */
+    /* ─── BUTTONS ─── */
     .btn-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+      gap: 0.65rem;
+      margin-bottom: 0.875rem;
     }
-
     .btn-action {
-      padding: 1rem;
+      padding: 0.875rem 0.5rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg-secondary);
       color: var(--text-primary);
       font-family: var(--font);
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
       text-align: center;
@@ -415,40 +511,18 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.3rem;
     }
-
-    .btn-action .btn-emoji { font-size: 1.5rem; }
-
+    .btn-action .btn-emoji { font-size: 1.35rem; }
     .btn-action:active { transform: scale(0.97); }
-
-    .btn-action.accent {
-      background: var(--accent-dim);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .btn-action.success {
-      background: var(--success-dim);
-      border-color: var(--success);
-      color: var(--success);
-    }
-
-    .btn-action.danger {
-      background: var(--danger-dim);
-      border-color: var(--danger);
-      color: var(--danger);
-    }
-
-    .btn-action.warning {
-      background: var(--warning-dim);
-      border-color: var(--warning);
-      color: var(--warning);
-    }
+    .btn-action.accent  { background: var(--accent-dim);   border-color: var(--accent);   color: var(--accent); }
+    .btn-action.success { background: var(--success-dim);  border-color: var(--success);  color: var(--success); }
+    .btn-action.danger  { background: var(--danger-dim);   border-color: var(--danger);   color: var(--danger); }
+    .btn-action.warning { background: var(--warning-dim);  border-color: var(--warning);  color: var(--warning); }
 
     .btn-full {
       width: 100%;
-      padding: 1rem 1.25rem;
+      padding: 0.95rem 1.25rem;
       border-radius: var(--radius);
       border: none;
       font-family: var(--font);
@@ -461,534 +535,379 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      margin-bottom: 0.65rem;
     }
-
     .btn-full:active { transform: scale(0.98); }
-    .btn-full.primary { background: var(--accent); color: #0D1117; }
-    .btn-full.success { background: var(--success); color: white; }
-    .btn-full.danger { background: var(--danger); color: white; margin-top: 0.75rem; }
-    .btn-full.ghost { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-primary); }
+    .btn-full.primary { background: var(--accent);   color: #0D1117; }
+    .btn-full.success { background: var(--success);  color: #fff; }
+    .btn-full.danger  { background: var(--danger);   color: #fff; }
+    .btn-full.warning { background: var(--warning);  color: #0D1117; }
+    .btn-full.ghost   { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-primary); }
 
-    /* Passenger List */
+    /* ─── PASSENGER ITEMS ─── */
     .passenger-item {
       background: var(--bg-secondary);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1rem;
-      margin-bottom: 0.75rem;
+      padding: 0.875rem;
+      margin-bottom: 0.65rem;
       display: flex;
-      align-items: center;
-      gap: 1rem;
-      position: relative;
+      align-items: flex-start;
+      gap: 0.75rem;
+      border-left-width: 3px;
     }
-
-    .passenger-item.paid { border-left: 3px solid var(--success); }
-    .passenger-item.unpaid { border-left: 3px solid var(--text-muted); }
-    .passenger-item.cash { border-left: 3px solid var(--warning); }
+    .passenger-item.paid   { border-left-color: var(--success); }
+    .passenger-item.unpaid { border-left-color: var(--text-muted); }
+    .passenger-item.cash   { border-left-color: var(--warning); }
 
     .passenger-avatar {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: var(--bg-tertiary);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       color: var(--accent);
       flex-shrink: 0;
     }
-
     .passenger-info { flex: 1; min-width: 0; }
-
     .passenger-name {
-      font-weight: 600;
-      font-size: 0.9rem;
+      font-weight: 700;
+      font-size: 0.875rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .passenger-details {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      margin-top: 0.15rem;
-    }
-
+    .passenger-details { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem; }
     .passenger-amount {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-family: var(--font-mono);
-      text-align: right;
+      flex-shrink: 0;
     }
 
     .status-badge {
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.2rem 0.5rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.18rem 0.45rem;
       border-radius: 20px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       margin-top: 0.2rem;
       display: inline-block;
     }
+    .status-badge.paid   { background: var(--success-dim); color: var(--success); }
+    .status-badge.unpaid { background: var(--bg-tertiary);  color: var(--text-muted); }
+    .status-badge.cash   { background: var(--warning-dim);  color: var(--warning); }
 
-    .status-badge.paid { background: var(--success-dim); color: var(--success); }
-    .status-badge.unpaid { background: var(--bg-tertiary); color: var(--text-muted); }
-    .status-badge.cash { background: var(--warning-dim); color: var(--warning); }
-
-    /* Toggle Switch */
-    .toggle-wrap {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      cursor: pointer;
-    }
-
-    .toggle input { opacity: 0; width: 0; height: 0; }
-
-    .toggle-slider {
-      position: absolute;
-      inset: 0;
-      background: var(--bg-tertiary);
-      border-radius: 24px;
-      transition: background 0.2s;
-      border: 1px solid var(--border);
-    }
-
-    .toggle-slider::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 2px;
-      top: 2px;
-      background: var(--text-muted);
-      border-radius: 50%;
-      transition: all 0.2s;
-    }
-
-    .toggle input:checked + .toggle-slider { background: var(--success-dim); border-color: var(--success); }
-    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); background: var(--success); }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px);
-      z-index: 200;
-      display: flex;
-      align-items: flex-end;
-      padding: 0;
-    }
-
-    .modal-sheet {
-      width: 100%;
-      max-height: 92vh;
-      background: var(--bg-secondary);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      border-top: 1px solid var(--border);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 1.5rem 1.25rem;
-      padding-bottom: calc(var(--safe-bottom) + 1.5rem);
-      animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-
-    .modal-handle {
-      width: 40px;
-      height: 4px;
-      background: var(--text-muted);
-      border-radius: 2px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .modal-title {
-      font-size: 1.25rem;
+    /* ─── PAX ACTION BUTTONS ─── */
+    .pax-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .pax-btn {
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      cursor: pointer;
+      border: 1px solid;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .pax-btn:active { transform: scale(0.95); }
+    .pax-btn.cash-btn   { background: var(--warning-dim); border-color: var(--warning); color: var(--warning); }
+    .pax-btn.paid-btn   { background: var(--success-dim); border-color: var(--success); color: var(--success); }
+    .pax-btn.unpaid-btn { background: var(--bg-tertiary);  border-color: var(--border);  color: var(--text-secondary); }
+    .pax-btn.del-btn    { background: var(--danger-dim);  border-color: var(--danger);  color: var(--danger); }
+
+    /* PAID state — big green tap target */
+    .pax-btn.paid-btn.is-paid {
+      background: var(--success);
+      color: #fff;
+      border-color: var(--success);
     }
 
-    /* Form Rows */
-    .form-row { margin-bottom: 1rem; }
-
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.4rem;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 0.875rem 1rem;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      font-family: var(--font);
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
-    }
-
-    .form-input:focus { border-color: var(--accent); }
-    .form-input::placeholder { color: var(--text-muted); }
-
-    .form-row-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    /* Currency Toggle */
+    /* ─── CURRENCY TOGGLE ─── */
     .currency-toggle {
       display: flex;
       background: var(--bg-primary);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       overflow: hidden;
+      height: 46px;
     }
-
     .currency-btn {
       flex: 1;
-      padding: 0.875rem;
       border: none;
       background: transparent;
       color: var(--text-secondary);
       font-family: var(--font);
-      font-size: 0.875rem;
-      font-weight: 600;
+      font-size: 0.8rem;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
-
     .currency-btn.active { background: var(--accent); color: #0D1117; }
 
-    /* Route Stop */
+    /* ─── MODAL SHEET ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      /* Prevent overlay from widening past viewport */
+      max-width: 100vw;
+    }
+    .modal-sheet {
+      width: 100%;
+      max-width: var(--app-width);
+      margin: 0 auto;
+      max-height: 90vh;
+      background: var(--bg-secondary);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      border-top: 1px solid var(--border);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 1.25rem 1.1rem;
+      padding-bottom: calc(var(--safe-bottom) + 1.25rem);
+      animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to   { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--text-muted);
+      border-radius: 2px;
+      margin: 0 auto 1.25rem;
+    }
+    .modal-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.25rem; }
+
+    /* ─── FORM ELEMENTS ─── */
+    .form-row { margin-bottom: 0.875rem; }
+    .form-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.35rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.8rem 0.875rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      max-width: 100%;
+    }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--text-muted); }
+    textarea.form-input { resize: none; }
+
+    .form-row-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-bottom: 0.875rem;
+    }
+
+    select.form-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 4.5L11 1' stroke='%238B949E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.875rem center;
+      padding-right: 2.25rem;
+    }
+
+    /* ─── ROUTE STOPS ─── */
     .route-stop {
       display: flex;
       align-items: flex-start;
-      gap: 0.875rem;
+      gap: 0.75rem;
       margin-bottom: 0.75rem;
       position: relative;
     }
-
     .stop-number {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: var(--accent);
       color: #0D1117;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
     }
-
     .stop-connector {
       position: absolute;
-      left: 13px;
-      top: 30px;
+      left: 12px;
+      top: 28px;
       width: 2px;
       height: calc(100% + 0.35rem);
       background: var(--border);
     }
+    .stop-info { flex: 1; min-width: 0; }
+    .stop-name    { font-weight: 700; font-size: 0.875rem; }
+    .stop-address { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.12rem; }
+    .stop-phone   { font-size: 0.72rem; color: var(--accent); margin-top: 0.12rem; font-family: var(--font-mono); }
 
-    .stop-info { flex: 1; }
-
-    .stop-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .stop-address {
-      font-size: 0.775rem;
-      color: var(--text-secondary);
-      margin-top: 0.15rem;
-    }
-
-    .stop-phone {
-      font-size: 0.775rem;
-      color: var(--accent);
-      margin-top: 0.15rem;
-      font-family: var(--font-mono);
-    }
-
-    /* P&L Row */
+    /* ─── P&L TABLE ─── */
     .pl-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.875rem 0;
+      padding: 0.8rem 0;
       border-bottom: 1px solid var(--border);
     }
-
     .pl-row:last-child { border-bottom: none; }
+    .pl-label { font-size: 0.875rem; color: var(--text-secondary); }
+    .pl-value { font-weight: 700; font-size: 0.95rem; font-family: var(--font-mono); }
 
-    .pl-label { font-size: 0.9rem; color: var(--text-secondary); }
-
-    .pl-value {
-      font-weight: 700;
-      font-size: 1rem;
-      font-family: var(--font-mono);
-    }
-
-    /* Upload Zone */
-    .upload-zone {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 2.5rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
-    }
-
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    .upload-zone input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
-
-    .upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .upload-title { font-weight: 600; margin-bottom: 0.25rem; }
-    .upload-sub { font-size: 0.8rem; color: var(--text-secondary); }
-
-    /* AI Result */
-    .ai-result {
-      background: var(--success-dim);
-      border: 1px solid var(--success);
-      border-radius: var(--radius);
-      padding: 1rem;
-      margin-top: 1rem;
-    }
-
-    .ai-result-title {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--success);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.5rem;
-    }
-
-    .ai-match-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .ai-match-name { font-weight: 600; }
-    .ai-match-amount { font-family: var(--font-mono); font-weight: 700; color: var(--success); font-size: 1.1rem; }
-
-    /* Expense Item */
+    /* ─── EXPENSE ITEM ─── */
     .expense-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 0;
+      padding: 0.7rem 0;
       border-bottom: 1px solid var(--border);
     }
+    .expense-item:last-child { border-bottom: none; }
+    .expense-left { display: flex; align-items: center; gap: 0.65rem; }
+    .expense-emoji { font-size: 1.15rem; }
+    .expense-name  { font-weight: 500; font-size: 0.85rem; }
+    .expense-currency { font-size: 0.65rem; color: var(--text-muted); }
+    .expense-amount { font-weight: 700; font-family: var(--font-mono); font-size: 0.875rem; }
 
-    .expense-left { display: flex; align-items: center; gap: 0.75rem; }
-    .expense-emoji { font-size: 1.25rem; }
-    .expense-name { font-weight: 500; font-size: 0.9rem; }
-    .expense-currency { font-size: 0.7rem; color: var(--text-muted); }
-    .expense-amount { font-weight: 700; font-family: var(--font-mono); font-size: 0.95rem; }
-
-    /* History Item */
+    /* ─── HISTORY ITEMS ─── */
     .history-item {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 1rem;
-      margin-bottom: 0.75rem;
+      padding: 0.95rem;
+      margin-bottom: 0.65rem;
     }
-
-    .history-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-
-    .history-route { font-weight: 700; font-size: 0.95rem; }
-    .history-date { font-size: 0.75rem; color: var(--text-secondary); }
-    .history-stats { display: flex; gap: 1rem; }
-    .history-stat { font-size: 0.8rem; color: var(--text-secondary); }
+    .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; }
+    .history-route { font-weight: 700; font-size: 0.9rem; }
+    .history-date  { font-size: 0.72rem; color: var(--text-secondary); }
+    .history-stats { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+    .history-stat  { font-size: 0.75rem; color: var(--text-secondary); }
     .history-stat span { color: var(--text-primary); font-weight: 600; font-family: var(--font-mono); }
 
-    /* Toast */
+    /* ─── ANALYTICS BARS ─── */
+    .bar-row { margin-bottom: 0.875rem; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.35rem; }
+    .bar-track { height: 7px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+
+    /* ─── TOAST ─── */
     .toast-container {
       position: fixed;
-      top: calc(var(--safe-top) + 80px);
+      top: calc(var(--safe-top) + 70px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 300;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
       pointer-events: none;
+      width: 90%;
+      max-width: 360px;
     }
-
     .toast {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 0.875rem 1.25rem;
-      font-size: 0.875rem;
+      padding: 0.8rem 1.1rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      white-space: nowrap;
-      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+      animation: toastIn 0.25s ease, toastOut 0.25s ease 2.75s forwards;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-
     .toast.success { border-color: var(--success); color: var(--success); }
-    .toast.error { border-color: var(--danger); color: var(--danger); }
-    .toast.info { border-color: var(--accent); color: var(--accent); }
+    .toast.error   { border-color: var(--danger);  color: var(--danger); }
+    .toast.info    { border-color: var(--accent);  color: var(--accent); }
+    @keyframes toastIn  { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes toastOut { to   { opacity:0; transform:translateY(-8px); } }
 
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(-12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes toastOut {
-      to { opacity: 0; transform: translateY(-8px); }
-    }
-
-    /* Spinner */
+    /* ─── MISC ─── */
     .spinner {
-      width: 20px;
-      height: 20px;
+      width: 18px; height: 18px;
       border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       display: inline-block;
     }
-
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Loading overlay */
-    .loading-overlay {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 3rem;
-    }
+    .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); }
+    .empty-icon  { font-size: 2.25rem; margin-bottom: 0.65rem; }
+    .empty-title { font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem; }
+    .empty-sub   { font-size: 0.8rem; }
 
-    .loading-text { color: var(--text-secondary); font-size: 0.875rem; }
-
-    /* Analytics bars */
-    .bar-row { margin-bottom: 1rem; }
-    .bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem; }
-    .bar-track { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
-
-    /* Finalize warning */
     .finalize-warning {
       background: var(--warning-dim);
       border: 1px solid var(--warning);
       border-radius: var(--radius);
-      padding: 1rem;
-      font-size: 0.875rem;
+      padding: 0.875rem;
+      font-size: 0.82rem;
       color: var(--warning);
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--text-muted);
-    }
+    .divider { height: 1px; background: var(--border); margin: 1rem 0; }
 
-    .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .empty-title { font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; }
-    .empty-sub { font-size: 0.85rem; }
-
-    /* Select */
-    select.form-input {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B949E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-      padding-right: 2.5rem;
-    }
-
-    textarea.form-input { resize: none; }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 1.25rem 0;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .pill.blue { background: var(--accent-dim); color: var(--accent); }
+    .pill { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+    .pill.blue  { background: var(--accent-dim);  color: var(--accent); }
     .pill.green { background: var(--success-dim); color: var(--success); }
 
-    .ai-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: linear-gradient(135deg, rgba(88,166,255,0.15), rgba(46,164,79,0.1));
-      border: 1px solid rgba(88,166,255,0.3);
-      border-radius: 20px;
-      padding: 0.2rem 0.6rem;
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    /* ─── DISPATCH PREVIEW TEXT ─── */
+    .dispatch-preview {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      line-height: 1.8;
+      word-break: break-word;
     }
 
-    @media (min-width: 480px) {
-      .main-content { max-width: 600px; margin: 0 auto; }
+    /* ─── BACK BUTTON ─── */
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 1rem;
+      -webkit-tap-highlight-color: transparent;
     }
   </style>
 </head>
@@ -996,135 +915,267 @@
 <div id="app"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// STATE & PERSISTENCE LAYER
-// ═══════════════════════════════════════════════
+'use strict';
 
-const STORAGE_KEYS = {
-  AUTH: 'shuttleops_auth',
-  USERS: 'shuttleops_users',
-  ACTIVE_TRIP: 'shuttleops_active_trip',
-  DISPATCH: 'shuttleops_dispatch',
-  TRIPS_HISTORY: 'shuttleops_history',
-  EXPENSES: 'shuttleops_expenses',
+// ════════════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════════════
+
+const MAX_TRIPS = 10;
+const APP_PREFIX = 'shayasrides_';
+
+const SK = {
+  AUTH:    APP_PREFIX + 'auth',
+  USERS:   APP_PREFIX + 'users',
+  TRIPS:   APP_PREFIX + 'trips',       // index: [{id,name,route,date,status}]
+  TRIP:    (id) => APP_PREFIX + 'trip_' + id,
+  DISPATCH:(id) => APP_PREFIX + 'dispatch_' + id,
+  HISTORY: APP_PREFIX + 'history',
+  XRATE:   APP_PREFIX + 'xrate',
 };
 
-const storage = {
-  get: (key) => { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; } catch { return null; } },
-  set: (key, val) => { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { console.error(e); } },
-  remove: (key) => { try { localStorage.removeItem(key); } catch {} }
+// ════════════════════════════════════════════════════════
+// STORAGE HELPERS
+// ════════════════════════════════════════════════════════
+
+const store = {
+  get:    (k)    => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch { return null; } },
+  set:    (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) { console.warn('Storage full?', e); } },
+  remove: (k)    => { try { localStorage.removeItem(k); } catch {} },
 };
 
-// ═══════════════════════════════════════════════
-// APP STATE (reactive with callbacks)
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// APP STATE
+// ════════════════════════════════════════════════════════
 
-let state = {
-  auth: null,
-  activeTab: 'trip',
-  activeModal: null,
-  activeTrip: null,
-  dispatch: [],
-  history: [],
-  toasts: [],
-  exchangeRate: 1.36, // 1 USD = 1.36 CAD approx
+const state = {
+  auth:          null,   // session object
+  screen:        'dashboard', // 'dashboard' | 'trip'
+  activeTab:     'trip',
+  activeTripId:  null,   // which slot is open
+  activeTrip:    null,   // full trip data object
+  tripIndex:     [],     // [{id,name,route,date,status:'live'|'saved'}]
+  history:       [],
+  exchangeRate:  1.36,
+  toasts:        [],
 };
 
-// Load persistent state on boot
-function loadState() {
-  state.auth = storage.get(STORAGE_KEYS.AUTH);
-  state.activeTrip = storage.get(STORAGE_KEYS.ACTIVE_TRIP);
-  state.dispatch = storage.get(STORAGE_KEYS.DISPATCH) || [];
-  state.history = storage.get(STORAGE_KEYS.TRIPS_HISTORY) || [];
+// ════════════════════════════════════════════════════════
+// BOOT — load persistent data
+// ════════════════════════════════════════════════════════
+
+function boot() {
+  state.auth        = store.get(SK.AUTH);
+  state.tripIndex   = store.get(SK.TRIPS)   || [];
+  state.history     = store.get(SK.HISTORY) || [];
+  state.exchangeRate= store.get(SK.XRATE)   || 1.36;
+  // Clean up stale auth
+  if (state.auth?.expires && Date.now() > state.auth.expires) {
+    store.remove(SK.AUTH);
+    state.auth = null;
+  }
 }
 
-function saveTrip() { storage.set(STORAGE_KEYS.ACTIVE_TRIP, state.activeTrip); }
-function saveDispatch() { storage.set(STORAGE_KEYS.DISPATCH, state.dispatch); }
-function saveHistory() { storage.set(STORAGE_KEYS.TRIPS_HISTORY, state.history); }
+// ════════════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════════════
 
-// ═══════════════════════════════════════════════
-// AUTH HELPERS
-// ═══════════════════════════════════════════════
+function getUsers() { return store.get(SK.USERS) || []; }
 
-function getUsers() { return storage.get(STORAGE_KEYS.USERS) || []; }
-function saveUsers(users) { storage.set(STORAGE_KEYS.USERS, users); }
-
-function login(email, password, remember) {
+function doLogin(email, password, remember) {
   const users = getUsers();
-  const user = users.find(u => u.email === email && u.password === btoa(password));
-  if (!user) return { ok: false, error: 'Invalid email or password.' };
-  const session = { email: user.email, name: user.name, expires: remember ? Date.now() + 30 * 86400000 : null };
-  storage.set(STORAGE_KEYS.AUTH, session);
+  const user  = users.find(u => u.email === email && u.pw === btoa(unescape(encodeURIComponent(password))));
+  if (!user) return { ok: false, err: 'Invalid email or password.' };
+  const session = { email: user.email, name: user.name, expires: remember ? Date.now() + 30*86400000 : null };
+  store.set(SK.AUTH, session);
   state.auth = session;
   return { ok: true };
 }
 
-function signup(name, email, password) {
+function doSignup(name, email, password) {
   const users = getUsers();
-  if (users.find(u => u.email === email)) return { ok: false, error: 'Email already registered.' };
-  users.push({ name, email, password: btoa(password) });
-  saveUsers(users);
+  if (users.find(u => u.email === email)) return { ok: false, err: 'Email already registered.' };
+  users.push({ name, email, pw: btoa(unescape(encodeURIComponent(password))) });
+  store.set(SK.USERS, users);
   const session = { email, name, expires: null };
-  storage.set(STORAGE_KEYS.AUTH, session);
+  store.set(SK.AUTH, session);
   state.auth = session;
   return { ok: true };
 }
 
-function logout() {
-  storage.remove(STORAGE_KEYS.AUTH);
+function doLogout() {
+  store.remove(SK.AUTH);
   state.auth = null;
+  state.screen = 'dashboard';
+  state.activeTripId = null;
+  state.activeTrip   = null;
   render();
 }
 
-function checkAuth() {
-  if (!state.auth) return false;
-  if (state.auth.expires && Date.now() > state.auth.expires) {
-    storage.remove(STORAGE_KEYS.AUTH);
-    state.auth = null;
-    return false;
-  }
+// ════════════════════════════════════════════════════════
+// TRIP LIBRARY
+// ════════════════════════════════════════════════════════
+
+function saveTripIndex() { store.set(SK.TRIPS, state.tripIndex); }
+
+function saveCurrentTrip() {
+  if (!state.activeTripId || !state.activeTrip) return;
+  store.set(SK.TRIP(state.activeTripId), state.activeTrip);
+}
+
+function loadTrip(id) {
+  return store.get(SK.TRIP(id));
+}
+
+function createTrip(name, route, date, driver, currency) {
+  if (state.tripIndex.length >= MAX_TRIPS) { showToast('Maximum 10 trips reached. Finalize one first.', 'error'); return false; }
+  const id = 'trip_' + Date.now();
+  const tripData = {
+    id, name, route, date, driver,
+    baseCurrency: currency,
+    passengers: [],
+    expenses: [],
+    createdAt: new Date().toISOString(),
+  };
+  store.set(SK.TRIP(id), tripData);
+  state.tripIndex.push({ id, name, route, date, status: 'saved' });
+  saveTripIndex();
+  openTrip(id);
   return true;
 }
 
-// ═══════════════════════════════════════════════
-// FINANCIAL HELPERS
-// ═══════════════════════════════════════════════
-
-function toCurrency(amount, fromCurrency, toCurrency) {
-  if (fromCurrency === toCurrency) return parseFloat(amount) || 0;
-  if (fromCurrency === 'USD' && toCurrency === 'CAD') return (parseFloat(amount) || 0) * state.exchangeRate;
-  if (fromCurrency === 'CAD' && toCurrency === 'USD') return (parseFloat(amount) || 0) / state.exchangeRate;
-  return parseFloat(amount) || 0;
+function openTrip(id) {
+  const data = loadTrip(id);
+  if (!data) { showToast('Trip data not found.', 'error'); return; }
+  state.activeTripId = id;
+  state.activeTrip   = data;
+  state.screen       = 'trip';
+  state.activeTab    = 'trip';
+  // Mark as live in index
+  const entry = state.tripIndex.find(t => t.id === id);
+  if (entry) { entry.status = 'live'; saveTripIndex(); }
+  render();
 }
 
-function fmt(amount, currency='USD') {
-  const sym = currency === 'CAD' ? 'CA$' : '$';
-  return `${sym}${(parseFloat(amount)||0).toFixed(2)}`;
+function saveAndExitTrip() {
+  if (!state.activeTripId) return;
+  saveCurrentTrip();
+  // Mark as saved in index
+  const entry = state.tripIndex.find(t => t.id === state.activeTripId);
+  if (entry) { entry.status = 'saved'; saveTripIndex(); }
+  state.activeTripId = null;
+  state.activeTrip   = null;
+  state.screen       = 'dashboard';
+  showToast('Trip saved! Tap it again to resume.', 'success');
+  render();
 }
 
-function calcTripPL() {
-  if (!state.activeTrip) return { revenue: 0, expenses: 0, profit: 0, paid: 0, unpaid: 0 };
+function deleteTrip(id) {
+  if (!confirm('Delete this trip? All its data will be lost.')) return;
+  store.remove(SK.TRIP(id));
+  store.remove(SK.DISPATCH(id));
+  state.tripIndex = state.tripIndex.filter(t => t.id !== id);
+  saveTripIndex();
+  if (state.activeTripId === id) {
+    state.activeTripId = null;
+    state.activeTrip   = null;
+    state.screen       = 'dashboard';
+  }
+  render();
+}
+
+function finalizeTrip() {
+  if (!state.activeTrip) return;
+  if (!confirm('Finalize trip? It will be archived and removed from the dashboard.')) return;
+  const pl = calcPL();
+  const rec = {
+    id:          state.activeTripId,
+    name:        state.activeTrip.name,
+    route:       state.activeTrip.route,
+    date:        state.activeTrip.date,
+    driver:      state.activeTrip.driver,
+    passengers:  (state.activeTrip.passengers || []).length,
+    revenue:     pl.revenue,
+    expenses:    pl.expenses,
+    currency:    state.activeTrip.baseCurrency,
+    finalizedAt: new Date().toISOString(),
+  };
+  state.history.push(rec);
+  store.set(SK.HISTORY, state.history);
+  // Remove from index & storage
+  state.tripIndex = state.tripIndex.filter(t => t.id !== state.activeTripId);
+  saveTripIndex();
+  store.remove(SK.TRIP(state.activeTripId));
+  store.remove(SK.DISPATCH(state.activeTripId));
+  state.activeTripId = null;
+  state.activeTrip   = null;
+  state.screen       = 'dashboard';
+  showToast('Trip finalized and archived! 🎉', 'success');
+  render();
+}
+
+function cancelActiveTrip() {
+  if (!confirm('Discard this trip entirely? All data will be lost.')) return;
+  store.remove(SK.TRIP(state.activeTripId));
+  store.remove(SK.DISPATCH(state.activeTripId));
+  state.tripIndex = state.tripIndex.filter(t => t.id !== state.activeTripId);
+  saveTripIndex();
+  state.activeTripId = null;
+  state.activeTrip   = null;
+  state.screen       = 'dashboard';
+  render();
+}
+
+// ════════════════════════════════════════════════════════
+// DISPATCH (per-trip)
+// ════════════════════════════════════════════════════════
+
+function getDispatch() {
+  return store.get(SK.DISPATCH(state.activeTripId)) || [];
+}
+function saveDispatch(stops) {
+  store.set(SK.DISPATCH(state.activeTripId), stops);
+}
+
+// ════════════════════════════════════════════════════════
+// FINANCE HELPERS
+// ════════════════════════════════════════════════════════
+
+function toCurrency(amount, from, to) {
+  const a = parseFloat(amount) || 0;
+  if (from === to) return a;
+  if (from === 'USD' && to === 'CAD') return a * state.exchangeRate;
+  if (from === 'CAD' && to === 'USD') return a / state.exchangeRate;
+  return a;
+}
+
+function fmt(amount, currency) {
+  const sym = (currency || 'USD') === 'CAD' ? 'CA$' : '$';
+  return sym + (parseFloat(amount) || 0).toFixed(2);
+}
+
+function calcPL() {
+  if (!state.activeTrip) return { revenue:0, expenses:0, profit:0, paid:0, unpaid:0 };
   const base = state.activeTrip.baseCurrency || 'USD';
-  let revenue = 0, paid = 0, unpaid = 0;
+  let revenue=0, paid=0, unpaid=0, expenses=0;
   (state.activeTrip.passengers || []).forEach(p => {
-    const amt = toCurrency(p.amount, p.currency || 'USD', base);
-    revenue += amt;
-    if (p.status === 'PAID' || p.status === 'CASH') paid += amt;
-    else unpaid += amt;
+    const a = toCurrency(p.amount, p.currency||'USD', base);
+    revenue += a;
+    if (p.status === 'PAID' || p.status === 'CASH') paid += a;
+    else unpaid += a;
   });
-  let expenses = 0;
   (state.activeTrip.expenses || []).forEach(e => {
-    expenses += toCurrency(e.amount, e.currency || 'USD', base);
+    expenses += toCurrency(e.amount, e.currency||'USD', base);
   });
   return { revenue, expenses, profit: revenue - expenses, paid, unpaid };
 }
 
-// ═══════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TOASTS
+// ════════════════════════════════════════════════════════
 
 function showToast(msg, type='info') {
-  const id = Date.now();
+  const id = Date.now() + Math.random();
   state.toasts.push({ id, msg, type });
   renderToasts();
   setTimeout(() => {
@@ -1134,96 +1185,59 @@ function showToast(msg, type='info') {
 }
 
 function renderToasts() {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
-  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-  container.innerHTML = state.toasts.map(t =>
-    `<div class="toast ${t.type}">${icons[t.type] || ''} ${t.msg}</div>`
+  const el = document.getElementById('toast-container');
+  if (!el) return;
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  el.innerHTML = state.toasts.map(t =>
+    `<div class="toast ${t.type}">${icons[t.type]||''} ${escHtml(t.msg)}</div>`
   ).join('');
 }
 
-// ═══════════════════════════════════════════════
-// AI PAYMENT MATCHING via Claude API
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// UTIL
+// ════════════════════════════════════════════════════════
 
-async function analyzePaymentScreenshot(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const base64 = e.target.result.split(',')[1];
-      const mediaType = file.type || 'image/jpeg';
-
-      try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 500,
-            messages: [{
-              role: 'user',
-              content: [
-                {
-                  type: 'image',
-                  source: { type: 'base64', media_type: mediaType, data: base64 }
-                },
-                {
-                  type: 'text',
-                  text: 'This is a payment screenshot (Zelle, CashApp, PayPal, Venmo, E-Transfer, or Bank Transfer). Extract the sender name and the amount paid. Respond ONLY with JSON like: {"sender":"Full Name","amount":125.00,"currency":"USD","platform":"Zelle"}. If you cannot find this info, respond with {"error":"not found"}.'
-                }
-              ]
-            }]
-          })
-        });
-
-        const data = await response.json();
-        const text = (data.content || []).map(c => c.text || '').join('');
-        const clean = text.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(clean);
-        resolve(parsed);
-      } catch (err) {
-        resolve({ error: 'Could not analyze image.' });
-      }
-    };
-    reader.readAsDataURL(file);
-  });
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ═══════════════════════════════════════════════
-// RENDER ENGINE
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// MASTER RENDER
+// ════════════════════════════════════════════════════════
 
 function render() {
   const app = document.getElementById('app');
-  if (!checkAuth()) {
+  if (!state.auth) {
     app.innerHTML = renderAuth();
-    attachAuthEvents();
     return;
   }
-  app.innerHTML = renderShell();
-  renderToasts();
-  attachShellEvents();
-  renderTab(state.activeTab);
+  if (state.screen === 'dashboard') {
+    app.innerHTML = renderDashboardPage();
+  } else {
+    app.innerHTML = renderShell();
+    renderToasts();
+    switchTab(state.activeTab, false);
+  }
 }
 
-// ═══════════════════════════════════════════════
-// AUTH VIEW
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════════════
+
+let _authMode = 'login';
 
 function renderAuth() {
   return `
   <div class="auth-screen">
-    <div class="auth-logo">Shuttle<span>Ops</span></div>
-    <div class="auth-sub">Montreal ↔ New York City · Dispatch & Ledger</div>
+    <div class="auth-logo">Shaya's <span>Rides</span></div>
+    <div class="auth-sub">Montreal ↔ NYC · Dispatch &amp; Ledger</div>
     <div class="auth-card">
       <div class="auth-tab-bar">
-        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+        <button class="auth-tab ${_authMode==='login'?'active':''}" onclick="authTab('login')">Sign In</button>
+        <button class="auth-tab ${_authMode==='signup'?'active':''}" onclick="authTab('signup')">Sign Up</button>
       </div>
-      <div id="auth-error"></div>
-      <div id="auth-form">
-        ${renderLoginForm()}
-      </div>
+      <div id="auth-err"></div>
+      <div id="auth-form">${_authMode==='login' ? renderLoginForm() : renderSignupForm()}</div>
     </div>
   </div>`;
 }
@@ -1232,91 +1246,172 @@ function renderLoginForm() {
   return `
   <div class="field-group">
     <label class="field-label">Email</label>
-    <input class="field-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+    <input class="field-input" type="email" id="a-email" placeholder="you@example.com" autocomplete="email" />
   </div>
   <div class="field-group">
     <label class="field-label">Password</label>
-    <input class="field-input" type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" />
+    <input class="field-input" type="password" id="a-pass" placeholder="••••••••" autocomplete="current-password" />
   </div>
   <div class="remember-row">
-    <input type="checkbox" id="remember-me" checked />
-    <label for="remember-me">Remember me for 30 days</label>
+    <input type="checkbox" id="a-rem" checked />
+    <label for="a-rem">Remember me for 30 days</label>
   </div>
-  <button class="btn-primary" id="auth-submit" onclick="handleLogin()">Sign In →</button>`;
+  <button class="btn-primary" onclick="handleLogin()">Sign In →</button>`;
 }
 
 function renderSignupForm() {
   return `
   <div class="field-group">
-    <label class="field-label">Full Name</label>
-    <input class="field-input" type="text" id="auth-name" placeholder="Your Name" autocomplete="name" />
+    <label class="field-label">Your Name</label>
+    <input class="field-input" type="text" id="a-name" placeholder="Your name" autocomplete="name" />
   </div>
   <div class="field-group">
     <label class="field-label">Email</label>
-    <input class="field-input" type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+    <input class="field-input" type="email" id="a-email" placeholder="you@example.com" autocomplete="email" />
   </div>
   <div class="field-group">
     <label class="field-label">Password</label>
-    <input class="field-input" type="password" id="auth-password" placeholder="Min 6 characters" autocomplete="new-password" />
+    <input class="field-input" type="password" id="a-pass" placeholder="Min 6 characters" autocomplete="new-password" />
   </div>
-  <button class="btn-primary" id="auth-submit" onclick="handleSignup()">Create Account →</button>`;
+  <button class="btn-primary" onclick="handleSignup()">Create Account →</button>`;
 }
 
-let authMode = 'login';
+function authTab(mode) {
+  _authMode = mode;
+  document.getElementById('auth-form').innerHTML = mode==='login' ? renderLoginForm() : renderSignupForm();
+  document.querySelectorAll('.auth-tab').forEach((b,i) => b.className = 'auth-tab' + ((i===0&&mode==='login')||(i===1&&mode==='signup')?' active':''));
+  document.getElementById('auth-err').innerHTML = '';
+}
 
-function switchAuthTab(mode) {
-  authMode = mode;
-  document.getElementById('tab-login').className = 'auth-tab' + (mode === 'login' ? ' active' : '');
-  document.getElementById('tab-signup').className = 'auth-tab' + (mode === 'signup' ? ' active' : '');
-  document.getElementById('auth-form').innerHTML = mode === 'login' ? renderLoginForm() : renderSignupForm();
-  document.getElementById('auth-error').innerHTML = '';
+function authError(msg) {
+  const el = document.getElementById('auth-err');
+  if (el) el.innerHTML = `<div class="auth-error">${escHtml(msg)}</div>`;
 }
 
 function handleLogin() {
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const remember = document.getElementById('remember-me').checked;
-  if (!email || !password) { showAuthError('Please fill in all fields.'); return; }
-  const result = login(email, password, remember);
-  if (result.ok) { render(); }
-  else showAuthError(result.error);
+  const email = document.getElementById('a-email')?.value.trim();
+  const pass  = document.getElementById('a-pass')?.value;
+  const rem   = document.getElementById('a-rem')?.checked;
+  if (!email||!pass) { authError('Please fill in all fields.'); return; }
+  const r = doLogin(email, pass, rem);
+  if (r.ok) render(); else authError(r.err);
 }
 
 function handleSignup() {
-  const name = document.getElementById('auth-name')?.value?.trim();
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  if (!name || !email || !password) { showAuthError('Please fill in all fields.'); return; }
-  if (password.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
-  const result = signup(name, email, password);
-  if (result.ok) { render(); }
-  else showAuthError(result.error);
+  const name  = document.getElementById('a-name')?.value.trim();
+  const email = document.getElementById('a-email')?.value.trim();
+  const pass  = document.getElementById('a-pass')?.value;
+  if (!name||!email||!pass) { authError('Please fill in all fields.'); return; }
+  if (pass.length < 6) { authError('Password must be at least 6 characters.'); return; }
+  const r = doSignup(name, email, pass);
+  if (r.ok) render(); else authError(r.err);
 }
 
-function showAuthError(msg) {
-  const el = document.getElementById('auth-error');
-  if (el) el.innerHTML = `<div class="auth-error">${msg}</div>`;
+// ════════════════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════════════════
+
+function renderDashboardPage() {
+  const slots = state.tripIndex;
+  const empty = MAX_TRIPS - slots.length;
+  const slotCards = slots.map(t => renderTripSlot(t)).join('');
+  const emptyCards = Array.from({length: Math.min(empty, MAX_TRIPS - slots.length)}, (_, i) =>
+    `<div class="trip-slot" onclick="openModal('newTrip')">
+      <div class="trip-slot-empty">
+        <div class="trip-slot-empty-icon">＋</div>
+        <div class="trip-slot-empty-label">New Trip</div>
+      </div>
+    </div>`
+  ).slice(0, Math.max(0, 10 - slots.length)).join('');
+
+  return `
+  <div style="background:var(--bg-primary);min-height:100vh;display:flex;flex-direction:column;">
+    <div class="top-bar">
+      <div class="top-bar-logo">Shaya's <span>Rides</span></div>
+      <div class="top-bar-right">
+        <span style="font-size:0.7rem;color:var(--text-secondary);">👋 ${escHtml(state.auth.name||'')}</span>
+        <div class="btn-icon" onclick="doLogout()" title="Sign out">🚪</div>
+      </div>
+    </div>
+
+    <div style="padding:1rem;flex:1;">
+      <div class="dashboard-header">
+        <div class="section-title">📋 Trip Library</div>
+        <div style="font-size:0.72rem;color:var(--text-muted);">${slots.length}/${MAX_TRIPS} trips</div>
+      </div>
+
+      <div style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:1rem;">
+        Tap a trip to open it. Tap <strong style="color:var(--text-primary);">Save &amp; Exit</strong> inside to come back later.
+      </div>
+
+      <div class="trip-library-grid">
+        ${slotCards}
+        ${slots.length < MAX_TRIPS ? `
+        <div class="trip-slot" onclick="openModal('newTrip')">
+          <div class="trip-slot-empty">
+            <div class="trip-slot-empty-icon">＋</div>
+            <div class="trip-slot-empty-label">New Trip</div>
+          </div>
+        </div>` : ''}
+      </div>
+
+      ${state.history.length > 0 ? `
+      <div style="margin-top:1.5rem;">
+        <div class="section-title" style="font-size:1rem;margin-bottom:0.75rem;">🗂 Recent Archives</div>
+        ${[...state.history].reverse().slice(0,3).map(h => `
+        <div class="history-item">
+          <div class="history-header">
+            <div class="history-route">${escHtml(h.name||h.route||'Trip')}</div>
+            <div class="history-date">${escHtml(h.date||'')}</div>
+          </div>
+          <div class="history-stats">
+            <div class="history-stat">Revenue: <span>${fmt(h.revenue, h.currency)}</span></div>
+            <div class="history-stat">Net: <span style="color:${(h.revenue-h.expenses)>=0?'var(--success)':'var(--danger)'}">${fmt(h.revenue-h.expenses,h.currency)}</span></div>
+            <div class="history-stat">Pax: <span>${h.passengers||0}</span></div>
+          </div>
+        </div>`).join('')}
+      </div>` : ''}
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <div id="modal-root"></div>
+  </div>`;
 }
 
-function attachAuthEvents() {
-  document.querySelectorAll('.field-input').forEach(el => {
-    el.addEventListener('keypress', e => { if (e.key === 'Enter') { authMode === 'login' ? handleLogin() : handleSignup(); } });
-  });
+function renderTripSlot(t) {
+  const isLive = t.status === 'live';
+  return `
+  <div class="trip-slot ${isLive?'active-trip':'has-data'}" onclick="openTrip('${t.id}')">
+    <button class="slot-delete" onclick="event.stopPropagation();deleteTrip('${t.id}')">✕</button>
+    <div>
+      <div class="trip-slot-name">${escHtml(t.name||'Unnamed')}</div>
+      <div class="trip-slot-meta">${escHtml(t.route||'')} · ${escHtml(t.date||'')}</div>
+    </div>
+    <div class="trip-slot-status">
+      <div class="slot-badge ${isLive?'live':'saved'}">${isLive?'🟢 Live':'💾 Saved'}</div>
+    </div>
+  </div>`;
 }
 
-// ═══════════════════════════════════════════════
-// MAIN SHELL
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// SHELL (inside a trip)
+// ════════════════════════════════════════════════════════
 
 function renderShell() {
-  const hasTrip = !!state.activeTrip;
+  const trip = state.activeTrip;
+  const hasTrip = !!trip;
   return `
   <div class="app-shell">
     <div class="top-bar">
-      <div class="top-bar-logo">Shuttle<span>Ops</span></div>
+      <div style="display:flex;align-items:center;gap:0.5rem;min-width:0;">
+        <button class="btn-icon" onclick="saveAndExitTrip()" title="Save & return to dashboard">🏠</button>
+        <div class="top-bar-logo" style="font-size:0.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          ${escHtml(trip?.name || "Shaya's Rides")}
+        </div>
+      </div>
       <div class="top-bar-right">
-        <div class="trip-badge ${hasTrip ? '' : 'inactive'}">${hasTrip ? '🟢 LIVE' : 'NO TRIP'}</div>
-        <div class="btn-icon" onclick="logout()">🚪</div>
+        <div class="trip-badge ${hasTrip?'':'inactive'}">${hasTrip?'🟢 LIVE':'NO TRIP'}</div>
+        <div class="btn-icon" onclick="doLogout()">🚪</div>
       </div>
     </div>
 
@@ -1324,16 +1419,16 @@ function renderShell() {
 
     <nav class="tab-nav">
       <button class="tab-btn ${state.activeTab==='trip'?'active':''}" onclick="switchTab('trip')">
-        <span class="tab-icon">🚐</span>Active Trip
+        <span class="tab-icon">🚐</span>Trip
       </button>
       <button class="tab-btn ${state.activeTab==='vault'?'active':''}" onclick="switchTab('vault')">
-        <span class="tab-icon">💳</span>Pay Vault
+        <span class="tab-icon">💳</span>Payments
       </button>
       <button class="tab-btn ${state.activeTab==='dispatch'?'active':''}" onclick="switchTab('dispatch')">
         <span class="tab-icon">📡</span>Dispatch
       </button>
       <button class="tab-btn ${state.activeTab==='analytics'?'active':''}" onclick="switchTab('analytics')">
-        <span class="tab-icon">📊</span>Analytics
+        <span class="tab-icon">📊</span>Stats
       </button>
       <button class="tab-btn ${state.activeTab==='history'?'active':''}" onclick="switchTab('history')">
         <span class="tab-icon">🗂</span>History
@@ -1344,64 +1439,58 @@ function renderShell() {
   <div id="modal-root"></div>`;
 }
 
-function attachShellEvents() {}
-
-function switchTab(tab) {
+function switchTab(tab, doScroll=true) {
   state.activeTab = tab;
+  // Update nav buttons
+  const tabs = ['trip','vault','dispatch','analytics','history'];
   document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    const tabs = ['trip','vault','dispatch','analytics','history'];
-    btn.className = 'tab-btn' + (tabs[i] === tab ? ' active' : '');
+    btn.className = 'tab-btn' + (tabs[i]===tab?' active':'');
   });
-  renderTab(tab);
-}
-
-function renderTab(tab) {
   const content = document.getElementById('main-content');
   if (!content) return;
   const renderers = { trip: renderTripTab, vault: renderVaultTab, dispatch: renderDispatchTab, analytics: renderAnalyticsTab, history: renderHistoryTab };
-  content.innerHTML = (renderers[tab] || (() => ''))();
-  attachTabEvents(tab);
+  content.innerHTML = (renderers[tab] || (() => '<div class="empty-state">Coming soon</div>'))();
+  if (doScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ═══════════════════════════════════════════════
-// TRIP TAB
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TAB: TRIP
+// ════════════════════════════════════════════════════════
 
 function renderTripTab() {
-  if (!state.activeTrip) return renderNoTrip();
   const trip = state.activeTrip;
-  const pl = calcTripPL();
+  if (!trip) return `<div class="empty-state"><div class="empty-icon">🚐</div><div class="empty-title">No trip loaded</div><div class="empty-sub">Go back to dashboard and open a trip.</div></div>`;
+
+  const pl   = calcPL();
   const base = trip.baseCurrency || 'USD';
-  const passengers = trip.passengers || [];
-  const paid = passengers.filter(p => p.status === 'PAID' || p.status === 'CASH').length;
+  const pax  = trip.passengers || [];
+  const paid = pax.filter(p => p.status==='PAID'||p.status==='CASH').length;
 
   return `
-  <div class="section-title">🚐 Active Trip</div>
-
-  <div class="card" style="border-color: var(--accent); margin-bottom:1rem;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-      <div style="font-weight:700;font-size:1.1rem;">${trip.route || 'Montreal → NYC'}</div>
+  <div class="card" style="border-color:var(--accent);margin-bottom:0.875rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+      <div style="font-weight:700;font-size:1rem;">${escHtml(trip.route||'Route TBD')}</div>
       <div class="pill blue">${base}</div>
     </div>
-    <div style="font-size:0.8rem;color:var(--text-secondary);">📅 ${trip.date || 'Today'} &nbsp;·&nbsp; 👤 Driver: ${trip.driver || 'TBD'} &nbsp;·&nbsp; 🪑 ${passengers.length} pax</div>
+    <div style="font-size:0.75rem;color:var(--text-secondary);">📅 ${escHtml(trip.date||'Today')} &nbsp;·&nbsp; 👤 ${escHtml(trip.driver||'TBD')} &nbsp;·&nbsp; 🪑 ${pax.length} pax</div>
   </div>
 
   <div class="metric-row">
     <div class="metric-card">
       <div class="metric-label">Gross Revenue</div>
-      <div class="metric-value blue">${fmt(pl.revenue, base)}</div>
+      <div class="metric-value blue">${fmt(pl.revenue,base)}</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Net Profit</div>
-      <div class="metric-value ${pl.profit >= 0 ? 'green' : 'red'}">${fmt(pl.profit, base)}</div>
+      <div class="metric-value ${pl.profit>=0?'green':'red'}">${fmt(pl.profit,base)}</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Collected</div>
-      <div class="metric-value green">${fmt(pl.paid, base)}</div>
+      <div class="metric-value green">${fmt(pl.paid,base)}</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Outstanding</div>
-      <div class="metric-value ${pl.unpaid > 0 ? 'yellow' : 'green'}">${fmt(pl.unpaid, base)}</div>
+      <div class="metric-value ${pl.unpaid>0?'yellow':'green'}">${fmt(pl.unpaid,base)}</div>
     </div>
   </div>
 
@@ -1416,344 +1505,289 @@ function renderTripTab() {
 
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Passenger Manifest (${paid}/${passengers.length} Paid)</div>
-      <div class="ai-badge">✨ AI</div>
+      <div class="card-title">Manifest (${paid}/${pax.length} Paid)</div>
     </div>
-    ${passengers.length === 0 ? '<div class="empty-state"><div class="empty-icon">🪑</div><div class="empty-title">No passengers yet</div><div class="empty-sub">Tap "Add Passenger" to build your manifest</div></div>' : passengers.map((p, i) => renderPassengerItem(p, i)).join('')}
+    ${pax.length===0
+      ? `<div class="empty-state" style="padding:1.5rem 0.5rem;"><div class="empty-icon">🪑</div><div class="empty-title">No passengers yet</div></div>`
+      : pax.map((p,i) => renderPassengerCard(p,i)).join('')}
   </div>
 
   ${renderExpensesCard()}
 
-  <div class="finalize-warning">⚠️ Data is auto-saved. Hit "Finalize Trip" only when complete — this action cannot be undone.</div>
+  <button class="btn-full warning" onclick="saveAndExitTrip()" style="margin-top:0.25rem;">💾 Save &amp; Exit to Dashboard</button>
+  <div class="finalize-warning">⚠️ Finalizing archives the trip and removes it from the dashboard.</div>
   <button class="btn-full success" onclick="finalizeTrip()">✅ Finalize Trip</button>
-  <button class="btn-full danger" onclick="cancelTrip()">🗑 Cancel & Discard Trip</button>`;
+  <button class="btn-full danger"  onclick="cancelActiveTrip()">🗑 Discard Trip</button>`;
 }
 
-function renderNoTrip() {
+function renderPassengerCard(p, i) {
+  const initials = (p.name||'?').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+  const status   = (p.status||'UNPAID').toLowerCase();
+  const isPaid   = p.status==='PAID';
+  const isCash   = p.status==='CASH';
   return `
-  <div style="text-align:center;padding:2rem 1rem 1rem;">
-    <div style="font-size:4rem;margin-bottom:1rem;">🚐</div>
-    <div style="font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">No Active Trip</div>
-    <div style="color:var(--text-secondary);margin-bottom:2rem;">Start a new trip to begin tracking passengers, payments, and expenses.</div>
-  </div>
-  <button class="btn-full primary" onclick="openModal('newTrip')" style="margin-bottom:1rem;">🚀 Start New Trip</button>`;
-}
-
-function renderPassengerItem(p, i) {
-  const initials = (p.name || '?').split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
-  return `
-  <div class="passenger-item ${p.status?.toLowerCase() || 'unpaid'}">
+  <div class="passenger-item ${status}">
     <div class="passenger-avatar">${initials}</div>
     <div class="passenger-info">
-      <div class="passenger-name">${p.name}</div>
-      <div class="passenger-details">📍 ${p.pickup || 'No pickup'} → ${p.dropoff || 'No dropoff'}</div>
-      <div class="passenger-details">📱 ${p.phone || 'No phone'}</div>
-      <div class="status-badge ${p.status?.toLowerCase() || 'unpaid'}">${p.status || 'UNPAID'}</div>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.5rem;">
-      <div class="passenger-amount">${fmt(p.amount, p.currency || 'USD')}</div>
-      <div style="display:flex;gap:0.4rem;">
-        <button onclick="togglePassengerStatus(${i},'CASH')" style="background:var(--warning-dim);border:1px solid var(--warning);color:var(--warning);border-radius:6px;padding:0.25rem 0.5rem;font-size:0.65rem;font-weight:700;cursor:pointer;">CASH</button>
-        <button onclick="togglePassengerStatus(${i},'PAID')" style="background:var(--success-dim);border:1px solid var(--success);color:var(--success);border-radius:6px;padding:0.25rem 0.5rem;font-size:0.65rem;font-weight:700;cursor:pointer;">✓PAID</button>
-        <button onclick="removePassenger(${i})" style="background:var(--danger-dim);border:1px solid var(--danger);color:var(--danger);border-radius:6px;padding:0.25rem 0.4rem;font-size:0.65rem;cursor:pointer;">✕</button>
+      <div class="passenger-name">${escHtml(p.name)}</div>
+      ${p.pickup||p.dropoff ? `<div class="passenger-details">📍 ${escHtml(p.pickup||'')} → ${escHtml(p.dropoff||'')}</div>` : ''}
+      ${p.phone ? `<div class="passenger-details">📱 ${escHtml(p.phone)}</div>` : ''}
+      <div class="pax-actions">
+        <button class="pax-btn paid-btn ${isPaid?'is-paid':''}" onclick="setPaxStatus(${i},'PAID')">
+          ${isPaid?'✅ PAID':'Mark Paid'}
+        </button>
+        <button class="pax-btn cash-btn ${isCash?'is-paid':''}" style="${isCash?'background:var(--warning);color:#0D1117;':''}" onclick="setPaxStatus(${i},'CASH')">
+          💵 Cash
+        </button>
+        ${isPaid||isCash ? `<button class="pax-btn unpaid-btn" onclick="setPaxStatus(${i},'UNPAID')">↩ Unpaid</button>` : ''}
+        <button class="pax-btn del-btn" onclick="removePax(${i})">✕</button>
       </div>
+    </div>
+    <div style="flex-shrink:0;text-align:right;">
+      <div class="passenger-amount">${fmt(p.amount,p.currency)}</div>
+      <div class="status-badge ${status}">${p.status||'UNPAID'}</div>
     </div>
   </div>`;
 }
 
 function renderExpensesCard() {
-  const expenses = state.activeTrip?.expenses || [];
+  const exp  = state.activeTrip?.expenses || [];
   const base = state.activeTrip?.baseCurrency || 'USD';
-  if (expenses.length === 0) return '';
+  if (!exp.length) return '';
   return `
   <div class="card">
-    <div class="card-title" style="margin-bottom:0.75rem;">Expenses</div>
-    ${expenses.map((e, i) => `
+    <div class="card-title" style="margin-bottom:0.65rem;">Expenses</div>
+    ${exp.map((e,i) => `
     <div class="expense-item">
       <div class="expense-left">
-        <div class="expense-emoji">${e.emoji || '💸'}</div>
+        <div class="expense-emoji">${e.emoji||'💸'}</div>
         <div>
-          <div class="expense-name">${e.name}</div>
-          <div class="expense-currency">${e.currency || 'USD'} → ${base}</div>
+          <div class="expense-name">${escHtml(e.name)}</div>
+          <div class="expense-currency">${e.currency||'USD'} → ${base}</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:0.5rem;">
-        <div class="expense-amount" style="color:var(--danger)">-${fmt(e.amount, e.currency)}</div>
-        <button onclick="removeExpense(${i})" style="background:none;border:none;color:var(--text-muted);font-size:0.9rem;cursor:pointer;">✕</button>
+        <div class="expense-amount" style="color:var(--danger)">-${fmt(e.amount,e.currency)}</div>
+        <button onclick="removeExpense(${i})" style="background:none;border:none;color:var(--text-muted);font-size:0.9rem;cursor:pointer;padding:0.2rem;">✕</button>
       </div>
     </div>`).join('')}
   </div>`;
 }
 
-// ═══════════════════════════════════════════════
-// VAULT TAB (AI Payment Matching)
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TAB: PAYMENTS VAULT (Manual — no AI key required)
+// ════════════════════════════════════════════════════════
 
 function renderVaultTab() {
+  const pax = state.activeTrip?.passengers || [];
   return `
-  <div class="section-title">💳 Master Payment Vault</div>
-  <div style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:1.5rem;">Upload payment screenshots. AI extracts sender & amount, then auto-matches to your manifest.</div>
-
-  <div class="upload-zone" id="upload-zone">
-    <input type="file" accept="image/*" id="payment-file-input" onchange="handlePaymentUpload(event)" />
-    <div class="upload-icon">📱</div>
-    <div class="upload-title">Drop Screenshot Here</div>
-    <div class="upload-sub">Zelle · CashApp · PayPal · Venmo · E-Transfer · Bank</div>
+  <div class="section-title" style="margin-bottom:0.5rem;">💳 Payment Tracker</div>
+  <div style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1.25rem;">
+    Tap a passenger below to toggle their payment status. No AI key needed — all manual.
   </div>
 
-  <div id="ai-processing" style="display:none;" class="loading-overlay">
-    <div class="spinner"></div>
-    <div class="loading-text">✨ AI analyzing payment screenshot...</div>
-  </div>
-
-  <div id="ai-result-container"></div>
-
-  ${!state.activeTrip ? '<div class="finalize-warning" style="margin-top:1rem;">⚠️ No active trip. Start a trip first to match payments.</div>' : ''}`;
-}
-
-async function handlePaymentUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  document.getElementById('ai-processing').style.display = 'flex';
-  document.getElementById('ai-result-container').innerHTML = '';
-
-  const result = await analyzePaymentScreenshot(file);
-
-  document.getElementById('ai-processing').style.display = 'none';
-
-  if (result.error || !result.sender) {
-    document.getElementById('ai-result-container').innerHTML = `
-    <div style="background:var(--danger-dim);border:1px solid var(--danger);border-radius:var(--radius);padding:1rem;margin-top:1rem;color:var(--danger);">
-      ❌ Could not extract payment info. Try a clearer screenshot.
-    </div>`;
-    return;
-  }
-
-  // Try to auto-match to passenger
-  let matchedIdx = -1;
-  if (state.activeTrip?.passengers) {
-    state.activeTrip.passengers.forEach((p, i) => {
-      const pName = (p.name || '').toLowerCase();
-      const sender = (result.sender || '').toLowerCase();
-      if (pName.includes(sender.split(' ')[0]) || sender.includes(pName.split(' ')[0])) {
-        matchedIdx = i;
-      }
-    });
-  }
-
-  const matched = matchedIdx >= 0 ? state.activeTrip.passengers[matchedIdx] : null;
-
-  document.getElementById('ai-result-container').innerHTML = `
-  <div class="ai-result" style="margin-top:1rem;">
-    <div class="ai-result-title">✨ AI Extracted</div>
-    <div class="ai-match-row" style="margin-bottom:0.75rem;">
-      <div>
-        <div class="ai-match-name">${result.sender}</div>
-        <div style="font-size:0.75rem;color:var(--text-secondary);">via ${result.platform || 'Payment'}</div>
+  ${pax.length===0 ? `
+  <div class="empty-state">
+    <div class="empty-icon">🪑</div>
+    <div class="empty-title">No passengers yet</div>
+    <div class="empty-sub">Add passengers in the Trip tab first</div>
+  </div>` : pax.map((p,i) => `
+  <div class="card" style="margin-bottom:0.65rem;cursor:pointer;" onclick="cycleStatus(${i})">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(p.name)}</div>
+        ${p.phone?`<div style="font-size:0.72rem;color:var(--text-secondary);">📱 ${escHtml(p.phone)}</div>`:''}
       </div>
-      <div class="ai-match-amount">${fmt(result.amount, result.currency || 'USD')}</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;flex-shrink:0;">
+        <div style="font-weight:700;font-family:var(--font-mono);">${fmt(p.amount,p.currency)}</div>
+        <div class="status-badge ${(p.status||'UNPAID').toLowerCase()}">${p.status||'UNPAID'}</div>
+      </div>
     </div>
-    ${matched ? `
-    <div style="background:var(--success-dim);border:1px solid var(--success);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:0.75rem;">
-      <div style="font-size:0.7rem;color:var(--success);font-weight:600;margin-bottom:0.25rem;">✅ PASSENGER MATCH FOUND</div>
-      <div style="font-weight:600;">${matched.name}</div>
+    <div style="margin-top:0.75rem;display:flex;gap:0.5rem;">
+      <button class="pax-btn paid-btn ${p.status==='PAID'?'is-paid':''}" style="flex:1;justify-content:center;display:flex;" onclick="event.stopPropagation();setPaxStatus(${i},'PAID')">
+        ${p.status==='PAID'?'✅ PAID':'Mark PAID'}
+      </button>
+      <button class="pax-btn cash-btn" style="flex:1;justify-content:center;display:flex;${p.status==='CASH'?'background:var(--warning);color:#0D1117;':''}" onclick="event.stopPropagation();setPaxStatus(${i},'CASH')">
+        💵 CASH
+      </button>
+      <button class="pax-btn unpaid-btn" style="flex:1;justify-content:center;display:flex;" onclick="event.stopPropagation();setPaxStatus(${i},'UNPAID')">
+        ↩ Unpaid
+      </button>
     </div>
-    <button class="btn-full success" onclick="applyPaymentMatch(${matchedIdx}, ${result.amount}, '${result.currency || 'USD'}')">✅ Mark as PAID</button>` :
-    `<div style="color:var(--warning);font-size:0.8rem;margin-bottom:0.75rem;">⚠️ No automatic match found. Select passenger manually:</div>
-    <select class="form-input" id="manual-match-select" style="margin-bottom:0.75rem;">
-      <option value="">-- Select Passenger --</option>
-      ${(state.activeTrip?.passengers || []).map((p, i) => `<option value="${i}">${p.name}</option>`).join('')}
-    </select>
-    <button class="btn-full primary" onclick="applyManualMatch(${result.amount}, '${result.currency || 'USD'}')">Apply Payment</button>`}
+  </div>`).join('')}
+
+  <div style="margin-top:1rem;padding:0.875rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);font-size:0.8rem;color:var(--text-secondary);">
+    💡 <strong style="color:var(--text-primary);">AI Vision Matching</strong> — Coming when you're ready to add an Anthropic API key. For now, tap the buttons above to mark payments manually.
   </div>`;
 }
 
-function applyPaymentMatch(idx, amount, currency) {
-  if (!state.activeTrip?.passengers?.[idx]) return;
-  state.activeTrip.passengers[idx].status = 'PAID';
-  state.activeTrip.passengers[idx].paidAmount = amount;
-  state.activeTrip.passengers[idx].paidCurrency = currency;
-  saveTrip();
-  showToast(`${state.activeTrip.passengers[idx].name} marked as PAID!`, 'success');
-  document.getElementById('ai-result-container').innerHTML = '';
-  renderTab('vault');
+// cycle: UNPAID → PAID → CASH → UNPAID
+function cycleStatus(idx) {
+  const p = state.activeTrip?.passengers?.[idx];
+  if (!p) return;
+  const cycle = { 'UNPAID':'PAID', 'PAID':'CASH', 'CASH':'UNPAID' };
+  p.status = cycle[p.status||'UNPAID'] || 'UNPAID';
+  saveCurrentTrip();
+  renderVaultTab && switchTab('vault', false);
 }
 
-function applyManualMatch(amount, currency) {
-  const idx = parseInt(document.getElementById('manual-match-select')?.value);
-  if (isNaN(idx) || idx < 0) { showToast('Please select a passenger', 'error'); return; }
-  applyPaymentMatch(idx, amount, currency);
-}
-
-// ═══════════════════════════════════════════════
-// DISPATCH TAB
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TAB: DISPATCH
+// ════════════════════════════════════════════════════════
 
 function renderDispatchTab() {
-  const stops = state.dispatch;
+  if (!state.activeTripId) return `<div class="empty-state"><div class="empty-icon">📡</div><div class="empty-title">No trip open</div></div>`;
+  const stops = getDispatch();
+  const trip  = state.activeTrip;
+
   return `
-  <div class="section-title">📡 Dispatch Blaster</div>
-  <div style="color:var(--text-secondary);font-size:0.875rem;margin-bottom:1.5rem;">Build the pickup route. Then blast the manifest to your driver via SMS or WhatsApp.</div>
+  <div class="section-title" style="margin-bottom:0.5rem;">📡 Dispatch Blaster</div>
+  <div style="color:var(--text-secondary);font-size:0.82rem;margin-bottom:1rem;">Build the pickup route, then blast a clean text list to your driver via SMS or WhatsApp.</div>
 
-  <button class="btn-full primary" onclick="openModal('addStop')" style="margin-bottom:1rem;">➕ Add Pickup Stop</button>
+  <button class="btn-full primary" onclick="openModal('addStop')" style="margin-bottom:0.75rem;">📍 Add Pickup Stop</button>
 
-  ${stops.length === 0 ? `
+  ${stops.length===0 ? `
   <div class="empty-state">
     <div class="empty-icon">📍</div>
-    <div class="empty-title">No stops added</div>
-    <div class="empty-sub">Add pickup addresses to build your driver route</div>
+    <div class="empty-title">No stops yet</div>
+    <div class="empty-sub">Add pickup addresses above</div>
   </div>` : `
   <div class="card">
-    <div class="card-title" style="margin-bottom:1rem;">Route (${stops.length} stops)</div>
-    ${stops.map((s, i) => `
+    <div class="card-title" style="margin-bottom:0.875rem;">Route · ${stops.length} stop${stops.length!==1?'s':''}</div>
+    ${stops.map((s,i) => `
     <div class="route-stop">
-      ${i < stops.length - 1 ? '<div class="stop-connector"></div>' : ''}
-      <div class="stop-number">${i + 1}</div>
+      ${i<stops.length-1?'<div class="stop-connector"></div>':''}
+      <div class="stop-number">${i+1}</div>
       <div class="stop-info">
-        <div class="stop-name">${s.name}</div>
-        <div class="stop-address">📍 ${s.address}</div>
-        <div class="stop-phone">📱 ${s.phone}</div>
+        <div class="stop-name">${escHtml(s.name)}</div>
+        <div class="stop-address">📍 ${escHtml(s.address)}</div>
+        ${s.phone?`<div class="stop-phone">📱 ${escHtml(s.phone)}</div>`:''}
+        ${s.notes?`<div class="stop-address" style="color:var(--warning);">📝 ${escHtml(s.notes)}</div>`:''}
       </div>
-      <button onclick="removeStop(${i})" style="background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer;padding:0.25rem;">✕</button>
+      <button onclick="removeStop(${i})" style="background:none;border:none;color:var(--text-muted);font-size:1rem;cursor:pointer;padding:0.25rem;flex-shrink:0;">✕</button>
     </div>`).join('')}
   </div>
 
-  <div class="card" style="margin-top:1rem;">
-    <div class="card-title" style="margin-bottom:0.75rem;">Preview Message</div>
-    <pre style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary);white-space:pre-wrap;line-height:1.7;">${generateManifestText()}</pre>
+  <div class="card" style="margin-top:0.875rem;">
+    <div class="card-title" style="margin-bottom:0.65rem;">Message Preview</div>
+    <div class="dispatch-preview">${escHtml(buildManifestText())}</div>
   </div>
 
-  <button class="btn-full primary" onclick="blastManifest()" style="margin-top:1rem;">📤 Send Manifest to Driver</button>
-  <button class="btn-full ghost" onclick="copyManifest()" style="margin-top:0.75rem;">📋 Copy to Clipboard</button>
-  <button class="btn-full danger" onclick="clearRoute()" style="margin-top:0.75rem;">🗑 Clear Route</button>`}`;
+  <button class="btn-full primary" onclick="blastManifest()" style="margin-top:0.875rem;">📤 Send Manifest to Driver</button>
+  <button class="btn-full ghost"   onclick="copyManifest()">📋 Copy to Clipboard</button>
+  <button class="btn-full danger"  onclick="clearRoute()">🗑 Clear Route</button>`}`;
 }
 
-function generateManifestText() {
-  const stops = state.dispatch;
-  const trip = state.activeTrip;
-  let text = `🚐 SHUTTLEOPS PICKUP ROUTE\n`;
-  text += `${trip?.route || 'Montreal → NYC'} · ${trip?.date || new Date().toLocaleDateString()}\n`;
-  text += `Driver: ${trip?.driver || 'TBD'}\n`;
-  text += `━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-  stops.forEach((s, i) => {
-    text += `STOP ${i+1}: ${s.name}\n`;
-    text += `📍 ${s.address}\n`;
-    text += `📱 ${s.phone}\n`;
-    if (s.notes) text += `📝 ${s.notes}\n`;
-    text += '\n';
+function buildManifestText() {
+  const stops = getDispatch();
+  const trip  = state.activeTrip;
+  let t = `SHAYA'S RIDES — PICKUP ROUTE\n`;
+  t += `${trip?.route||'Route'} · ${trip?.date||new Date().toLocaleDateString()}\n`;
+  if (trip?.driver) t += `Driver: ${trip.driver}\n`;
+  t += `${'─'.repeat(28)}\n\n`;
+  stops.forEach((s,i) => {
+    t += `STOP ${i+1} — ${s.name}\n`;
+    t += `  Address: ${s.address}\n`;
+    if (s.phone) t += `  Phone:   ${s.phone}\n`;
+    if (s.notes) t += `  Notes:   ${s.notes}\n`;
+    t += '\n';
   });
-  text += `━━━━━━━━━━━━━━━━━━━━━━\n`;
-  text += `Total Stops: ${stops.length} · Powered by ShuttleOps`;
-  return text;
+  t += `${'─'.repeat(28)}\n`;
+  t += `Total: ${stops.length} pickup${stops.length!==1?'s':''}`;
+  return t;
 }
 
 function blastManifest() {
-  const text = generateManifestText();
+  const text = buildManifestText();
   if (navigator.share) {
-    navigator.share({ title: 'ShuttleOps Dispatch Manifest', text }).catch(() => {});
+    navigator.share({ title: "Shaya's Rides — Dispatch", text }).catch(() => {});
   } else {
-    const encoded = encodeURIComponent(text);
-    window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
   }
 }
 
 function copyManifest() {
-  navigator.clipboard.writeText(generateManifestText()).then(() => showToast('Manifest copied!', 'success'));
+  if (!navigator.clipboard) { showToast('Clipboard not available on this browser', 'error'); return; }
+  navigator.clipboard.writeText(buildManifestText()).then(() => showToast('Manifest copied to clipboard!', 'success'));
 }
 
 function clearRoute() {
-  if (!confirm('Clear the entire route?')) return;
-  state.dispatch = [];
-  saveDispatch();
-  renderTab('dispatch');
+  if (!confirm('Clear all stops?')) return;
+  saveDispatch([]);
+  switchTab('dispatch', false);
 }
 
 function removeStop(idx) {
-  state.dispatch.splice(idx, 1);
-  saveDispatch();
-  renderTab('dispatch');
+  const stops = getDispatch();
+  stops.splice(idx, 1);
+  saveDispatch(stops);
+  switchTab('dispatch', false);
 }
 
-// ═══════════════════════════════════════════════
-// ANALYTICS TAB
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TAB: ANALYTICS
+// ════════════════════════════════════════════════════════
 
 function renderAnalyticsTab() {
+  const now     = new Date();
   const history = state.history;
-  const now = new Date();
-  const thisWeek = history.filter(t => {
-    const d = new Date(t.date);
-    const diff = (now - d) / 86400000;
-    return diff <= 7;
-  });
-  const thisMonth = history.filter(t => {
-    const d = new Date(t.date);
-    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-  });
 
-  const weekRevenue = thisWeek.reduce((s, t) => s + (t.revenue || 0), 0);
-  const weekExpenses = thisWeek.reduce((s, t) => s + (t.expenses || 0), 0);
-  const monthRevenue = thisMonth.reduce((s, t) => s + (t.revenue || 0), 0);
-  const monthExpenses = thisMonth.reduce((s, t) => s + (t.expenses || 0), 0);
-  const totalTrips = history.length;
-  const avgPax = totalTrips > 0 ? (history.reduce((s, t) => s + (t.passengers || 0), 0) / totalTrips).toFixed(1) : '0';
+  const weekData  = history.filter(t => { const d=new Date(t.date); return (now-d)/86400000 <= 7; });
+  const monthData = history.filter(t => { const d=new Date(t.date); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); });
+
+  const sum = (arr, k) => arr.reduce((s,t)=>s+(t[k]||0), 0);
+
+  const wRev = sum(weekData, 'revenue'),  wExp = sum(weekData, 'expenses');
+  const mRev = sum(monthData,'revenue'),  mExp = sum(monthData,'expenses');
+  const aRev = sum(history,  'revenue'),  aExp = sum(history,  'expenses');
+  const avgPax = history.length>0 ? (sum(history,'passengers')/history.length).toFixed(1) : '0';
 
   return `
-  <div class="section-title">📊 Business Health</div>
+  <div class="section-title" style="margin-bottom:0.875rem;">📊 Business Health</div>
 
   <div class="metric-row">
-    <div class="metric-card">
-      <div class="metric-label">This Week · Revenue</div>
-      <div class="metric-value blue">${fmt(weekRevenue)}</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">This Week · Net</div>
-      <div class="metric-value ${weekRevenue - weekExpenses >= 0 ? 'green':'red'}">${fmt(weekRevenue - weekExpenses)}</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">This Month · Revenue</div>
-      <div class="metric-value blue">${fmt(monthRevenue)}</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">This Month · Net</div>
-      <div class="metric-value ${monthRevenue - monthExpenses >= 0 ? 'green':'red'}">${fmt(monthRevenue - monthExpenses)}</div>
-    </div>
+    <div class="metric-card"><div class="metric-label">Week Revenue</div><div class="metric-value blue">${fmt(wRev)}</div></div>
+    <div class="metric-card"><div class="metric-label">Week Net</div><div class="metric-value ${wRev-wExp>=0?'green':'red'}">${fmt(wRev-wExp)}</div></div>
+    <div class="metric-card"><div class="metric-label">Month Revenue</div><div class="metric-value blue">${fmt(mRev)}</div></div>
+    <div class="metric-card"><div class="metric-label">Month Net</div><div class="metric-value ${mRev-mExp>=0?'green':'red'}">${fmt(mRev-mExp)}</div></div>
   </div>
 
   <div class="card">
-    <div class="card-title" style="margin-bottom:1rem;">All-Time Stats</div>
-    <div class="pl-row">
-      <div class="pl-label">Total Trips Completed</div>
-      <div class="pl-value blue">${totalTrips}</div>
-    </div>
-    <div class="pl-row">
-      <div class="pl-label">Total Gross Revenue</div>
-      <div class="pl-value">${fmt(history.reduce((s,t) => s+(t.revenue||0), 0))}</div>
-    </div>
-    <div class="pl-row">
-      <div class="pl-label">Total Expenses</div>
-      <div class="pl-value red">${fmt(history.reduce((s,t) => s+(t.expenses||0), 0))}</div>
-    </div>
-    <div class="pl-row">
-      <div class="pl-label">Net Profit (All Time)</div>
-      <div class="pl-value green">${fmt(history.reduce((s,t) => s+((t.revenue||0)-(t.expenses||0)), 0))}</div>
-    </div>
-    <div class="pl-row">
-      <div class="pl-label">Avg Passengers / Trip</div>
-      <div class="pl-value">${avgPax}</div>
-    </div>
+    <div class="card-title" style="margin-bottom:0.65rem;">All-Time</div>
+    <div class="pl-row"><div class="pl-label">Trips Finalized</div><div class="pl-value blue">${history.length}</div></div>
+    <div class="pl-row"><div class="pl-label">Total Revenue</div><div class="pl-value">${fmt(aRev)}</div></div>
+    <div class="pl-row"><div class="pl-label">Total Expenses</div><div class="pl-value red">${fmt(aExp)}</div></div>
+    <div class="pl-row"><div class="pl-label">Net Profit</div><div class="pl-value green">${fmt(aRev-aExp)}</div></div>
+    <div class="pl-row"><div class="pl-label">Avg Pax / Trip</div><div class="pl-value">${avgPax}</div></div>
   </div>
 
-  ${totalTrips > 0 ? renderRevenueChart(history) : ''}
+  ${history.length>0 ? `
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.875rem;">Last ${Math.min(5,history.length)} Trips</div>
+    ${[...history].reverse().slice(0,5).map(t => {
+      const maxRev = Math.max(...history.map(h=>h.revenue||0), 1);
+      const pct    = Math.round(((t.revenue||0)/maxRev)*100);
+      const net    = (t.revenue||0)-(t.expenses||0);
+      return `
+      <div class="bar-row">
+        <div class="bar-label">
+          <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%;">${escHtml(t.name||t.route||'Trip')}</span>
+          <span style="font-family:var(--font-mono);color:${net>=0?'var(--success)':'var(--danger)'};">${net>=0?'+':''}${fmt(net)}</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:var(--accent);"></div></div>
+      </div>`;
+    }).join('')}
+  </div>` : ''}
 
-  <div class="card" style="margin-top:1rem;">
-    <div class="card-title" style="margin-bottom:0.75rem;">Exchange Rate</div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:0.65rem;">Exchange Rate</div>
     <div class="pl-row">
-      <div class="pl-label">USD → CAD Rate</div>
+      <div class="pl-label">1 USD =</div>
       <div style="display:flex;align-items:center;gap:0.5rem;">
-        <input type="number" step="0.01" value="${state.exchangeRate}" id="rate-input" style="width:80px;padding:0.4rem 0.5rem;background:var(--bg-primary);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-family:var(--font-mono);font-size:0.875rem;text-align:center;" onchange="updateRate(this.value)" />
-        <span style="font-size:0.8rem;color:var(--text-secondary);">CAD per USD</span>
+        <input type="number" step="0.01" min="0.1" value="${state.exchangeRate}"
+          style="width:70px;padding:0.35rem 0.5rem;background:var(--bg-primary);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);font-family:var(--font-mono);font-size:0.85rem;text-align:center;"
+          onchange="updateRate(this.value)" />
+        <span style="font-size:0.8rem;color:var(--text-secondary);">CAD</span>
       </div>
     </div>
   </div>`;
@@ -1761,93 +1795,68 @@ function renderAnalyticsTab() {
 
 function updateRate(val) {
   const r = parseFloat(val);
-  if (r > 0) { state.exchangeRate = r; showToast(`Rate updated: 1 USD = ${r} CAD`, 'info'); }
+  if (r>0) { state.exchangeRate=r; store.set(SK.XRATE,r); showToast('Rate updated','info'); }
 }
 
-function renderRevenueChart(history) {
-  const last6 = history.slice(-6);
-  const maxRev = Math.max(...last6.map(t => t.revenue || 0), 1);
-  return `
-  <div class="card">
-    <div class="card-title" style="margin-bottom:1rem;">Last ${last6.length} Trips</div>
-    ${last6.map(t => {
-      const revPct = Math.round(((t.revenue || 0) / maxRev) * 100);
-      const expPct = Math.round(((t.expenses || 0) / maxRev) * 100);
-      return `
-      <div class="bar-row">
-        <div class="bar-label">
-          <span>${t.route || 'Trip'}</span>
-          <span style="font-family:var(--font-mono);color:var(--success);">+${fmt(t.revenue - t.expenses)}</span>
-        </div>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:${revPct}%;background:var(--accent);"></div>
-        </div>
-      </div>`;
-    }).join('')}
-  </div>`;
-}
-
-// ═══════════════════════════════════════════════
-// HISTORY TAB
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// TAB: HISTORY
+// ════════════════════════════════════════════════════════
 
 function renderHistoryTab() {
   const history = state.history;
   return `
-  <div class="section-title">🗂 Trip History</div>
-  <input class="form-input" type="search" id="history-search" placeholder="🔍 Search trips..." oninput="filterHistory(this.value)" style="margin-bottom:1rem;" />
+  <div class="section-title" style="margin-bottom:0.875rem;">🗂 Archived Trips</div>
+  <input class="form-input" type="search" placeholder="🔍 Search trips…" oninput="filterHistory(this.value)" style="margin-bottom:0.875rem;" />
   <div id="history-list">
-    ${history.length === 0 ? `
-    <div class="empty-state">
-      <div class="empty-icon">🗂</div>
-      <div class="empty-title">No trips yet</div>
-      <div class="empty-sub">Finalized trips will appear here</div>
-    </div>` : [...history].reverse().map((t, i) => renderHistoryItem(t, i)).join('')}
+    ${renderHistoryList(history)}
   </div>`;
 }
 
-function renderHistoryItem(t, i) {
-  const net = (t.revenue || 0) - (t.expenses || 0);
-  return `
-  <div class="history-item">
-    <div class="history-header">
-      <div class="history-route">${t.route || 'Trip'}</div>
-      <div class="history-date">${t.date}</div>
-    </div>
-    <div class="history-stats">
-      <div class="history-stat">Revenue: <span>${fmt(t.revenue)}</span></div>
-      <div class="history-stat">Net: <span style="color:${net>=0?'var(--success)':'var(--danger)'}">${fmt(net)}</span></div>
-      <div class="history-stat">Pax: <span>${t.passengers || 0}</span></div>
-    </div>
-  </div>`;
+function renderHistoryList(list) {
+  if (!list.length) return `<div class="empty-state"><div class="empty-icon">🗂</div><div class="empty-title">No archived trips</div><div class="empty-sub">Finalized trips appear here</div></div>`;
+  return [...list].reverse().map(t => {
+    const net = (t.revenue||0)-(t.expenses||0);
+    return `
+    <div class="history-item">
+      <div class="history-header">
+        <div class="history-route">${escHtml(t.name||t.route||'Trip')}</div>
+        <div class="history-date">${escHtml(t.date||'')}</div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">${escHtml(t.route||'')} · Driver: ${escHtml(t.driver||'—')}</div>
+      <div class="history-stats">
+        <div class="history-stat">Revenue: <span>${fmt(t.revenue,t.currency)}</span></div>
+        <div class="history-stat">Net: <span style="color:${net>=0?'var(--success)':'var(--danger)'}">${fmt(net,t.currency)}</span></div>
+        <div class="history-stat">Pax: <span>${t.passengers||0}</span></div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-function filterHistory(query) {
-  const list = document.getElementById('history-list');
-  if (!list) return;
+function filterHistory(q) {
+  const el = document.getElementById('history-list');
+  if (!el) return;
   const filtered = state.history.filter(t =>
-    (t.route || '').toLowerCase().includes(query.toLowerCase()) ||
-    (t.date || '').includes(query)
+    (t.name||t.route||'').toLowerCase().includes(q.toLowerCase()) ||
+    (t.date||'').includes(q) ||
+    (t.driver||'').toLowerCase().includes(q.toLowerCase())
   );
-  list.innerHTML = filtered.length === 0
-    ? '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No results</div></div>'
-    : [...filtered].reverse().map(renderHistoryItem).join('');
+  el.innerHTML = renderHistoryList(filtered);
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 // MODALS
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 
 function openModal(name) {
   const root = document.getElementById('modal-root');
   if (!root) return;
-  const modals = {
-    newTrip: renderNewTripModal,
+  const renderers = {
+    newTrip:      renderNewTripModal,
     addPassenger: renderAddPassengerModal,
-    addExpense: renderAddExpenseModal,
-    addStop: renderAddStopModal,
+    addExpense:   renderAddExpenseModal,
+    addStop:      renderAddStopModal,
   };
-  root.innerHTML = `<div class="modal-overlay" onclick="closeModalIfBg(event)">${(modals[name] || (() => ''))()}</div>`;
+  root.innerHTML = `<div class="modal-overlay" onclick="closeModalIfBg(event)">${(renderers[name]||(() => ''))()}</div>`;
 }
 
 function closeModal() {
@@ -1859,70 +1868,69 @@ function closeModalIfBg(e) {
   if (e.target.classList.contains('modal-overlay')) closeModal();
 }
 
+// ─── NEW TRIP ───
+
+let _newTripCurr = 'USD';
+
 function renderNewTripModal() {
   const today = new Date().toISOString().split('T')[0];
   return `
   <div class="modal-sheet">
     <div class="modal-handle"></div>
-    <div class="modal-title">🚀 Start New Trip</div>
+    <div class="modal-title">🚀 New Trip</div>
+
+    <div class="form-row">
+      <label class="form-label">Trip Name (e.g. "Monday NYC")</label>
+      <input class="form-input" type="text" id="nt-name" placeholder="Monday NYC" autocomplete="off" />
+    </div>
     <div class="form-row">
       <label class="form-label">Route</label>
-      <select class="form-input" id="trip-route">
-        <option value="Montreal → NYC">Montreal → NYC</option>
-        <option value="NYC → Montreal">NYC → Montreal</option>
-        <option value="Montreal → NYC → Montreal">Round Trip</option>
+      <select class="form-input" id="nt-route">
+        <option>Montreal → NYC</option>
+        <option>NYC → Montreal</option>
+        <option>Round Trip</option>
       </select>
     </div>
     <div class="form-row">
       <label class="form-label">Date</label>
-      <input class="form-input" type="date" id="trip-date" value="${today}" />
+      <input class="form-input" type="date" id="nt-date" value="${today}" />
     </div>
     <div class="form-row">
       <label class="form-label">Driver Name</label>
-      <input class="form-input" type="text" id="trip-driver" placeholder="Driver full name" />
+      <input class="form-input" type="text" id="nt-driver" placeholder="Driver full name" />
     </div>
     <div class="form-row">
       <label class="form-label">Base Currency</label>
       <div class="currency-toggle">
-        <button class="currency-btn active" id="curr-usd" onclick="setCurr('USD')">USD $</button>
-        <button class="currency-btn" id="curr-cad" onclick="setCurr('CAD')">CAD CA$</button>
+        <button class="currency-btn active" id="nt-usd" onclick="setNTCurr('USD')">USD $</button>
+        <button class="currency-btn"        id="nt-cad" onclick="setNTCurr('CAD')">CAD CA$</button>
       </div>
     </div>
-    <div class="form-row">
-      <label class="form-label">Notes (optional)</label>
-      <textarea class="form-input" id="trip-notes" rows="2" placeholder="e.g. 14-seater van, border crossing at 6am"></textarea>
-    </div>
-    <button class="btn-full success" onclick="createTrip()" style="margin-top:0.5rem;">✅ Create Trip</button>
+    <button class="btn-full success" onclick="handleCreateTrip()" style="margin-top:0.5rem;">✅ Create Trip</button>
   </div>`;
 }
 
-let _tripCurr = 'USD';
-function setCurr(c) {
-  _tripCurr = c;
-  document.getElementById('curr-usd').className = 'currency-btn' + (c === 'USD' ? ' active' : '');
-  document.getElementById('curr-cad').className = 'currency-btn' + (c === 'CAD' ? ' active' : '');
+function setNTCurr(c) {
+  _newTripCurr = c;
+  document.getElementById('nt-usd').className = 'currency-btn' + (c==='USD'?' active':'');
+  document.getElementById('nt-cad').className = 'currency-btn' + (c==='CAD'?' active':'');
 }
 
-function createTrip() {
-  const route = document.getElementById('trip-route')?.value;
-  const date = document.getElementById('trip-date')?.value;
-  const driver = document.getElementById('trip-driver')?.value?.trim();
-  const notes = document.getElementById('trip-notes')?.value?.trim();
-  if (!driver) { showToast('Please enter driver name', 'error'); return; }
-  state.activeTrip = {
-    id: Date.now(),
-    route, date, driver, notes,
-    baseCurrency: _tripCurr,
-    passengers: [],
-    expenses: [],
-    createdAt: new Date().toISOString(),
-  };
-  saveTrip();
+function handleCreateTrip() {
+  const name   = document.getElementById('nt-name')?.value.trim();
+  const route  = document.getElementById('nt-route')?.value;
+  const date   = document.getElementById('nt-date')?.value;
+  const driver = document.getElementById('nt-driver')?.value.trim();
+  if (!name)   { showToast('Please give this trip a name', 'error'); return; }
+  if (!driver) { showToast('Please enter a driver name',   'error'); return; }
   closeModal();
-  state.activeTab = 'trip';
-  render();
-  showToast('Trip started! 🚀', 'success');
+  const ok = createTrip(name, route, date, driver, _newTripCurr);
+  if (ok) showToast(`Trip "${name}" created! 🚀`, 'success');
 }
+
+// ─── ADD PASSENGER ───
+
+let _pCurr = 'USD';
 
 function renderAddPassengerModal() {
   return `
@@ -1934,76 +1942,73 @@ function renderAddPassengerModal() {
       <input class="form-input" type="text" id="p-name" placeholder="Passenger name" autocomplete="off" />
     </div>
     <div class="form-row">
-      <label class="form-label">Phone Number</label>
+      <label class="form-label">Phone</label>
       <input class="form-input" type="tel" id="p-phone" placeholder="+1 (514) 555-0100" />
     </div>
     <div class="form-row-split">
       <div>
-        <label class="form-label">Pickup Location</label>
-        <input class="form-input" type="text" id="p-pickup" placeholder="e.g. 123 Main St" />
+        <label class="form-label">Pickup</label>
+        <input class="form-input" type="text" id="p-pickup" placeholder="123 Main St" />
       </div>
       <div>
         <label class="form-label">Drop-off</label>
-        <input class="form-input" type="text" id="p-dropoff" placeholder="e.g. Penn Station" />
+        <input class="form-input" type="text" id="p-dropoff" placeholder="Penn Station" />
       </div>
     </div>
     <div class="form-row-split">
       <div>
-        <label class="form-label">Fare Amount</label>
-        <input class="form-input" type="number" id="p-amount" placeholder="0.00" step="0.01" />
+        <label class="form-label">Fare</label>
+        <input class="form-input" type="number" id="p-amount" placeholder="0.00" step="0.01" inputmode="decimal" />
       </div>
       <div>
         <label class="form-label">Currency</label>
         <div class="currency-toggle">
-          <button class="currency-btn active" id="p-curr-usd" onclick="setPCurr('USD')">USD</button>
-          <button class="currency-btn" id="p-curr-cad" onclick="setPCurr('CAD')">CAD</button>
+          <button class="currency-btn active" id="p-usd" onclick="setPCurr('USD')">USD</button>
+          <button class="currency-btn"        id="p-cad" onclick="setPCurr('CAD')">CAD</button>
         </div>
       </div>
     </div>
     <div class="form-row">
-      <label class="form-label">Payment Status</label>
+      <label class="form-label">Status</label>
       <select class="form-input" id="p-status">
         <option value="UNPAID">Unpaid</option>
-        <option value="PAID">Paid (Digital)</option>
+        <option value="PAID">Paid</option>
         <option value="CASH">Cash</option>
       </select>
     </div>
-    <button class="btn-full primary" onclick="addPassenger()" style="margin-top:0.5rem;">Add to Manifest</button>
+    <button class="btn-full primary" onclick="handleAddPassenger()" style="margin-top:0.5rem;">Add to Manifest</button>
   </div>`;
 }
 
-let _pCurr = 'USD';
 function setPCurr(c) {
   _pCurr = c;
-  document.getElementById('p-curr-usd').className = 'currency-btn' + (c==='USD'?' active':'');
-  document.getElementById('p-curr-cad').className = 'currency-btn' + (c==='CAD'?' active':'');
+  document.getElementById('p-usd').className = 'currency-btn' + (c==='USD'?' active':'');
+  document.getElementById('p-cad').className = 'currency-btn' + (c==='CAD'?' active':'');
 }
 
-function addPassenger() {
-  const name = document.getElementById('p-name')?.value?.trim();
-  const phone = document.getElementById('p-phone')?.value?.trim();
-  const pickup = document.getElementById('p-pickup')?.value?.trim();
-  const dropoff = document.getElementById('p-dropoff')?.value?.trim();
-  const amount = parseFloat(document.getElementById('p-amount')?.value) || 0;
-  const status = document.getElementById('p-status')?.value || 'UNPAID';
-  if (!name) { showToast('Passenger name required', 'error'); return; }
-  if (!state.activeTrip) return;
+function handleAddPassenger() {
+  const name    = document.getElementById('p-name')?.value.trim();
+  const phone   = document.getElementById('p-phone')?.value.trim();
+  const pickup  = document.getElementById('p-pickup')?.value.trim();
+  const dropoff = document.getElementById('p-dropoff')?.value.trim();
+  const amount  = parseFloat(document.getElementById('p-amount')?.value)||0;
+  const status  = document.getElementById('p-status')?.value||'UNPAID';
+  if (!name) { showToast('Passenger name is required', 'error'); return; }
   state.activeTrip.passengers.push({ name, phone, pickup, dropoff, amount, currency: _pCurr, status });
-  saveTrip();
+  saveCurrentTrip();
   closeModal();
-  renderTab('trip');
+  switchTab('trip', false);
   showToast(`${name} added!`, 'success');
 }
 
+// ─── ADD EXPENSE ───
+
+let _eCurr = 'USD';
+
 function renderAddExpenseModal() {
-  const categories = [
-    {emoji:'⛽',label:'Gas'},
-    {emoji:'🛣️',label:'Tolls'},
-    {emoji:'👤',label:'Driver Pay'},
-    {emoji:'🍔',label:'Food'},
-    {emoji:'🅿️',label:'Parking'},
-    {emoji:'🔧',label:'Maintenance'},
-    {emoji:'📦',label:'Other'},
+  const cats = [
+    {e:'⛽',l:'Gas'},{e:'🛣️',l:'Tolls'},{e:'👤',l:'Driver Pay'},
+    {e:'🍔',l:'Food'},{e:'🅿️',l:'Parking'},{e:'🔧',l:'Maintenance'},{e:'📦',l:'Other'},
   ];
   return `
   <div class="modal-sheet">
@@ -2012,51 +2017,50 @@ function renderAddExpenseModal() {
     <div class="form-row">
       <label class="form-label">Category</label>
       <select class="form-input" id="exp-cat">
-        ${categories.map(c => `<option value="${c.emoji} ${c.label}">${c.emoji} ${c.label}</option>`).join('')}
+        ${cats.map(c=>`<option value="${c.e}|${c.l}">${c.e} ${c.l}</option>`).join('')}
       </select>
     </div>
     <div class="form-row-split">
       <div>
         <label class="form-label">Amount</label>
-        <input class="form-input" type="number" id="exp-amount" placeholder="0.00" step="0.01" />
+        <input class="form-input" type="number" id="exp-amount" placeholder="0.00" step="0.01" inputmode="decimal" />
       </div>
       <div>
         <label class="form-label">Currency</label>
         <div class="currency-toggle">
-          <button class="currency-btn active" id="e-curr-usd" onclick="setECurr('USD')">USD</button>
-          <button class="currency-btn" id="e-curr-cad" onclick="setECurr('CAD')">CAD</button>
+          <button class="currency-btn active" id="e-usd" onclick="setECurr('USD')">USD</button>
+          <button class="currency-btn"        id="e-cad" onclick="setECurr('CAD')">CAD</button>
         </div>
       </div>
     </div>
     <div class="form-row">
       <label class="form-label">Notes (optional)</label>
-      <input class="form-input" type="text" id="exp-notes" placeholder="e.g. Shell station near border" />
+      <input class="form-input" type="text" id="exp-notes" placeholder="e.g. Shell near border" />
     </div>
-    <button class="btn-full danger" onclick="addExpense()" style="margin-top:0.5rem;">Log Expense</button>
+    <button class="btn-full danger" onclick="handleAddExpense()" style="margin-top:0.5rem;">Log Expense</button>
   </div>`;
 }
 
-let _eCurr = 'USD';
 function setECurr(c) {
   _eCurr = c;
-  document.getElementById('e-curr-usd').className = 'currency-btn' + (c==='USD'?' active':'');
-  document.getElementById('e-curr-cad').className = 'currency-btn' + (c==='CAD'?' active':'');
+  document.getElementById('e-usd').className = 'currency-btn' + (c==='USD'?' active':'');
+  document.getElementById('e-cad').className = 'currency-btn' + (c==='CAD'?' active':'');
 }
 
-function addExpense() {
-  const catVal = document.getElementById('exp-cat')?.value || '';
-  const [emoji, ...rest] = catVal.split(' ');
-  const name = rest.join(' ');
-  const amount = parseFloat(document.getElementById('exp-amount')?.value) || 0;
-  const notes = document.getElementById('exp-notes')?.value?.trim();
-  if (!amount) { showToast('Enter expense amount', 'error'); return; }
-  if (!state.activeTrip) return;
-  state.activeTrip.expenses.push({ emoji, name, amount, currency: _eCurr, notes });
-  saveTrip();
+function handleAddExpense() {
+  const catVal = document.getElementById('exp-cat')?.value||'';
+  const [emoji, label] = catVal.split('|');
+  const amount = parseFloat(document.getElementById('exp-amount')?.value)||0;
+  const notes  = document.getElementById('exp-notes')?.value.trim();
+  if (!amount) { showToast('Enter an amount', 'error'); return; }
+  state.activeTrip.expenses.push({ emoji, name: label, amount, currency: _eCurr, notes });
+  saveCurrentTrip();
   closeModal();
-  renderTab('trip');
-  showToast(`${emoji} ${name} logged!`, 'success');
+  switchTab('trip', false);
+  showToast(`${emoji} ${label} logged!`, 'success');
 }
+
+// ─── ADD STOP ───
 
 function renderAddStopModal() {
   return `
@@ -2065,115 +2069,81 @@ function renderAddStopModal() {
     <div class="modal-title">📍 Add Pickup Stop</div>
     <div class="form-row">
       <label class="form-label">Passenger Name</label>
-      <input class="form-input" type="text" id="stop-name" placeholder="Full name" autocomplete="off" />
+      <input class="form-input" type="text" id="st-name" placeholder="Full name" autocomplete="off" />
     </div>
     <div class="form-row">
       <label class="form-label">Pickup Address</label>
-      <input class="form-input" type="text" id="stop-address" placeholder="Full street address" />
+      <input class="form-input" type="text" id="st-addr" placeholder="Full street address" />
     </div>
     <div class="form-row">
-      <label class="form-label">Phone Number</label>
-      <input class="form-input" type="tel" id="stop-phone" placeholder="+1 (514) 555-0100" />
+      <label class="form-label">Phone</label>
+      <input class="form-input" type="tel" id="st-phone" placeholder="+1 (514) 555-0100" />
     </div>
     <div class="form-row">
       <label class="form-label">Notes (optional)</label>
-      <input class="form-input" type="text" id="stop-notes" placeholder="e.g. Bring 2 suitcases, buzzer #302" />
+      <input class="form-input" type="text" id="st-notes" placeholder="e.g. Buzzer #302, 2 bags" />
     </div>
-    <button class="btn-full primary" onclick="addStop()" style="margin-top:0.5rem;">Add Stop</button>
+    <button class="btn-full primary" onclick="handleAddStop()" style="margin-top:0.5rem;">Add Stop</button>
   </div>`;
 }
 
-function addStop() {
-  const name = document.getElementById('stop-name')?.value?.trim();
-  const address = document.getElementById('stop-address')?.value?.trim();
-  const phone = document.getElementById('stop-phone')?.value?.trim();
-  const notes = document.getElementById('stop-notes')?.value?.trim();
-  if (!name || !address) { showToast('Name and address required', 'error'); return; }
-  state.dispatch.push({ name, address, phone, notes });
-  saveDispatch();
+function handleAddStop() {
+  const name    = document.getElementById('st-name')?.value.trim();
+  const address = document.getElementById('st-addr')?.value.trim();
+  const phone   = document.getElementById('st-phone')?.value.trim();
+  const notes   = document.getElementById('st-notes')?.value.trim();
+  if (!name||!address) { showToast('Name and address are required', 'error'); return; }
+  const stops = getDispatch();
+  stops.push({ name, address, phone, notes });
+  saveDispatch(stops);
   closeModal();
-  renderTab('dispatch');
-  showToast(`Stop added!`, 'success');
+  switchTab('dispatch', false);
+  showToast('Stop added!', 'success');
 }
 
-// ═══════════════════════════════════════════════
-// TRIP ACTIONS
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// PASSENGER ACTIONS
+// ════════════════════════════════════════════════════════
 
-function togglePassengerStatus(idx, status) {
-  if (!state.activeTrip?.passengers?.[idx]) return;
-  const p = state.activeTrip.passengers[idx];
+function setPaxStatus(idx, status) {
+  const p = state.activeTrip?.passengers?.[idx];
+  if (!p) return;
+  // Toggle off if already set
   p.status = p.status === status ? 'UNPAID' : status;
-  saveTrip();
-  renderTab('trip');
+  saveCurrentTrip();
+  // Re-render whichever tab is active
+  switchTab(state.activeTab, false);
 }
 
-function removePassenger(idx) {
+function removePax(idx) {
   if (!state.activeTrip?.passengers) return;
-  const name = state.activeTrip.passengers[idx].name;
+  const name = state.activeTrip.passengers[idx]?.name;
   state.activeTrip.passengers.splice(idx, 1);
-  saveTrip();
-  renderTab('trip');
+  saveCurrentTrip();
+  switchTab('trip', false);
   showToast(`${name} removed`, 'info');
 }
 
 function removeExpense(idx) {
   if (!state.activeTrip?.expenses) return;
   state.activeTrip.expenses.splice(idx, 1);
-  saveTrip();
-  renderTab('trip');
+  saveCurrentTrip();
+  switchTab('trip', false);
 }
 
-function finalizeTrip() {
-  if (!state.activeTrip) return;
-  if (!confirm('Finalize this trip? This will archive it and clear the active trip.')) return;
-  const pl = calcTripPL();
-  const record = {
-    id: state.activeTrip.id,
-    route: state.activeTrip.route,
-    date: state.activeTrip.date,
-    driver: state.activeTrip.driver,
-    passengers: (state.activeTrip.passengers || []).length,
-    revenue: pl.revenue,
-    expenses: pl.expenses,
-    currency: state.activeTrip.baseCurrency,
-    finalizedAt: new Date().toISOString(),
-  };
-  state.history.push(record);
-  saveHistory();
-  state.activeTrip = null;
-  storage.remove(STORAGE_KEYS.ACTIVE_TRIP);
-  showToast('Trip finalized and archived! 🎉', 'success');
-  state.activeTab = 'history';
-  render();
-}
-
-function cancelTrip() {
-  if (!confirm('Discard this trip? All data will be lost.')) return;
-  state.activeTrip = null;
-  storage.remove(STORAGE_KEYS.ACTIVE_TRIP);
-  showToast('Trip discarded.', 'info');
-  renderTab('trip');
-  render();
-}
-
-function attachTabEvents(tab) {}
-
-// ═══════════════════════════════════════════════
-// SERVICE WORKER REGISTRATION
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// SERVICE WORKER
+// ════════════════════════════════════════════════════════
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 
-// ═══════════════════════════════════════════════
-// BOOT
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+// GO!
+// ════════════════════════════════════════════════════════
 
-loadState();
+boot();
 render();
 </script>
 </body>
